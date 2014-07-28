@@ -1,0 +1,4 @@
+[23-Jul-2014 15:07:18 UTC] PHP Notice:  Undefined variable: team_id in /home/camapblue/public_html/myadmin/includes/views/team/edit.php on line 68
+[23-Jul-2014 15:07:24 UTC] PHP Notice:  Undefined variable: team_id in /home/camapblue/public_html/myadmin/includes/views/team/edit.php on line 68
+[24-Jul-2014 09:06:52 UTC] PHP Fatal error:  Class 'NationController' not found in /home/camapblue/public_html/myadmin/index.php on line 78
+[28-Jul-2014 04:52:00 UTC] PHP Fatal error:  Class 'NationController' not found in /home/camapblue/public_html/myadmin/index.php on line 78
