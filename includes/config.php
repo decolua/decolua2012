@@ -10,17 +10,18 @@ header("Pragma: no-cache");
 header("Vary: Accept-Encoding");
 
 //DB
-/*
-$db_host = 'localhost';
-$db_user = 'root';
-$db_pass = 'baoanh1';
-$db_name = 'ztruyen';	
-*/
-$db_host = '23.229.216.198';
-$db_user = 'anhvh';
-$db_pass = 'challenge';
-$db_name = 'funnybet';	
-//Web Config
+if ($_SERVER['HTTP_HOST'] == "localhost"){
+	$db_host = 'localhost';
+	$db_user = 'root';
+	$db_pass = '';
+	$db_name = 'funnybet';	
+}
+else{
+	$db_host = '23.229.216.198';
+	$db_user = 'anhvh';
+	$db_pass = 'challenge';
+	$db_name = 'funnybet';	
+}
 
 // Configs
 require_once('connect.php');
