@@ -3,7 +3,7 @@ class M7Model
 {
     function __construct(){
         global $db;
-        $this->db = $db;
+        $this->db = $db; 
     }
 	
 	public function get7mMatchById($m7_match_id){
@@ -71,30 +71,6 @@ class M7Model
 		return $this->db->lastInsertId(); 	
 	}
 	
-	public function updateM7($m7_id, $name, $short_name, $stadium, $avatar, $fans_num, $fk_league_id){
-		if($this->db){
-			$szQuery = "UPDATE team SET
-						name = :name,
-						short_name = :short_name,
-						stadium = :stadium,
-						avatar = :avatar,
-						fans_num = :fans_num,
-						fk_league_id = :fk_league_id
-						WHERE m7_id = :m7_id";
-			$st = $this->db->prepare($szQuery);		
-			$st->bindParam(':name', $name, PDO::PARAM_STR);
-			$st->bindParam(':short_name', $short_name, PDO::PARAM_STR);	
-			$st->bindParam(':stadium', $stadium, PDO::PARAM_STR);
-			$st->bindParam(':avatar', $avatar, PDO::PARAM_STR);
-			$st->bindParam(':fans_num', $fans_num, PDO::PARAM_STR);
-			$st->bindParam(':fk_league_id', $fk_league_id, PDO::PARAM_INT);
-			$st->bindParam(':m7_id', $m7_id, PDO::PARAM_INT);
-			$st->execute();	
-		}
-		else{
-			throw new Exception("Category is not define!");
-		}	
-	}
 	
 	public function deleteM7($m7_id){
 		if($this->db){

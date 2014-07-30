@@ -184,7 +184,7 @@ class Crawler{
 				if ($pBaseData[$i]->match_id == $pDetailData[$j]->match_id){
 					$pObject = new stdClass();
 					$pObject->match_id = $pBaseData[$i]->match_id;
-					$pObject->league_id = $pBaseData[$i]->league_id;
+					$pObject->league_id = $pBaseData[$i]->league_id; 
 					$pObject->league_short_name = $pBaseData[$i]->league_short_name;
 					$pObject->home_id = $pBaseData[$i]->home_id;
 					$pObject->home_name = $pBaseData[$i]->home_name;

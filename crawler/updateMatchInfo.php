@@ -15,10 +15,8 @@
 	// Query Live Data
 	$pDBMatch = $pMatchModel->getLivingMatch();
 	
-	$nDBCount = count($pDBMatch);
-	echo $nDBCount . " ";
+	$nDBCount = count($pDBMatch); 
 	$nMatchCount = count($pMatchData);
-	echo $nMatchCount . " ";
 	
 	for ($i=0; $i<$nDBCount; $i++){
 		for ($j=0; $j<$nMatchCount; $j++){

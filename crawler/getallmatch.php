@@ -4,7 +4,7 @@
 	$pCrawler = new Crawler();		
 	$pTeamModel = new TeamModel();
 	$p7mModel = new M7Model();
-	$pMatchModel = new MatchModel();
+	$pMatchModel = new MatchModel(); 
 	
 	// Init Crawler 
 	$pCrawler->_bUseProxy = false;

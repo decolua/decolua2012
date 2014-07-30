@@ -7,7 +7,7 @@ class MatchModel
     }
 	
 	public function getMatchById($id){
-		if($this->db) {
+		if($this->db) { 
 			$st = $this->db->prepare("SELECT * FROM `match` WHERE id=:id");
 			$st->bindParam(':id', $id);
 			$st->execute();
@@ -114,7 +114,7 @@ class MatchModel
 	public function visibleMatch($id){
 		if($this->db){
 			$szQuery = "UPDATE `match` SET
-						visibile = 1 - visibile
+						visible = 1 - visible
 						WHERE id = :id";
 			$st = $this->db->prepare($szQuery);		
 			$st->bindParam(':id', $id, PDO::PARAM_INT);
