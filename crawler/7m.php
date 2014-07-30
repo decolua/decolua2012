@@ -82,7 +82,7 @@ class Crawler{
 			$nCount = count($lsMatchId);
 			$lsData = array();
 			for ($i = 0; $i < $nCount; $i++){
-				$pObject = new stdClass();
+				$pObject = new stdClass(); 
 				$pObject->match_id = $lsMatchId[$i];
 				$pObject->match_time = $lsMatchTime[$i];
 				$pObject->league_id = $lsLeagueId[$i];
@@ -115,14 +115,18 @@ class Crawler{
 			
 			if (isset($lsData[16])){
 				$pObject->league_id = intval($lsData[16]);
-				if ($this->_bLeageTable && in_array($pObject->league_id, $this->_lsLeagueTable)) {
+				if (!$this->_bLeageTable || in_array($pObject->league_id, $this->_lsLeagueTable)) {
 					$pObject->league_short_name = $this->mysub($lsData[0]);
 					$pObject->home_id = $lsData[9];
 					$pObject->home_name = $this->mysub($lsData[2]);
 					$pObject->away_id = $lsData[10];
 					$pObject->away_name = $this->mysub($lsData[3]);
 					$pObject->away_name = $this->mysub($lsData[3]);
-					$pObject->handicap = $this->mysub($lsData[20]);
+					if (isset($lsData[20]))
+						$pObject->handicap = $this->mysub($lsData[20]);
+					else
+						$pObject->handicap = $this->mysub($lsData[20]);
+
 					$lsBaseData[$j++] = $pObject;
 				}
 			}
@@ -147,12 +151,10 @@ class Crawler{
 			$pObject->match_status = intval($lsData[0]);
 			$pObject->home_goals = intval($lsData[1]);
 			$pObject->away_goals = intval($lsData[2]);
-			if (isset($lsData[8])){
+			if (isset($lsData[8]))
 				$pObject->first_time = str_to_time($this->mysub($lsData[8]));
-			}
-			else{
+			else
 				$pObject->first_time = "0000-00-00 00:00:00";
-			}
 			$pObject->first_result = $this->mysub($lsData[6]);
 			$pObject->second_time = $this->mysub($lsData[5]);
 			if (isset($lsData[11])){

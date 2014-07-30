@@ -15,6 +15,44 @@ class M7Model
 		}			
 	}
 	
+	public function insert($pObject){
+		if($this->db){
+			$lsData = get_object_vars($pObject);
+			
+			$szFieldList = "";
+			$szBindList = "";
+			foreach($lsData as $key => $value)	{
+				$szFieldList .= $key . ',';
+				$szBindList .= ':' . $key . ',';
+			}				
+
+			$szFieldList = substr($szFieldList, 0, strlen($szFieldList) - 1);
+			$szBindList = substr($szBindList, 0, strlen($szBindList) - 1);
+			
+			$szQuery = "INSERT INTO 
+						m7($szFieldList) 
+						VALUES ($szBindList)";
+			$st = $this->db->prepare($szQuery);	
+
+			$lsValue = array();
+			$i = 0;
+			foreach($lsData as $key => $value)	{
+				$lsValue[$i] = $value;
+				if (is_string($value))
+					$st->bindParam(":$key" , $lsValue[$i], PDO::PARAM_STR);
+				else
+					$st->bindParam(":$key", $lsValue[$i]);
+				$i++;
+			}
+			
+			$st->execute();
+		}
+		else{
+			throw new Exception("Category is not define!");
+		}
+		return $this->db->lastInsertId(); 	
+	}	
+	
 	public function insertM7($m7_match_id, $m7_match_status, $m7_crawler_status, $match_id){
 		if($this->db){
 			$szQuery = "INSERT INTO 
