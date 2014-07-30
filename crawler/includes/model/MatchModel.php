@@ -25,23 +25,6 @@ class MatchModel
 		}			
 	}
 	
-	public function updateHandicap(){
-		if($this->db){
-			$szQuery = "UPDATE `match` SET
-						home_goals = :home_goals,
-						away_goals = :away_goals
-						WHERE id = :id";
-			$st = $this->db->prepare($szQuery);		
-			$st->bindParam(':home_goals', $home_goals);
-			$st->bindParam(':away_goals', $away_goals);
-			$st->bindParam(':id', $id);
-			$st->execute();	
-		}
-		else{
-			throw new Exception("Category is not define!");
-		}	
-	}
-	
 	public function insert($pObject){
 		if($this->db){
 			$lsData = get_object_vars($pObject);
@@ -80,64 +63,41 @@ class MatchModel
 		return $this->db->lastInsertId(); 	
 	}	
 	
-	public function insertMatch($league_id, $team_home_id, $team_away_id, $match_home_goals, $match_away_goals, $match_first_result, $match_first_time, $match_second_time, $match_handicap, $match_home_back, $match_away_back, $match_status, $m7_id){
+	public function update($match_id, $pObject){
 		if($this->db){
-			$szQuery = "INSERT INTO 
-						`match`(league_id, team_home_id, team_away_id, match_home_goals, match_away_goals, match_first_result, match_first_time, match_second_time, match_handicap, match_home_back, match_away_back, match_status, m7_id) 
-						VALUES (:league_id, :team_home_id, :team_away_id, :match_home_goals, :match_away_goals, :match_first_result, :match_first_time, :match_second_time, :match_handicap, :match_home_back, :match_away_back, :match_status, :m7_id)";
+			$szBind = "";		
+		
+			$lsData = get_object_vars($pObject);
+			if (count($lsData) == 0)
+				return;
+			
+			foreach($lsData as $key => $value)	{
+				$szBind .= "$key =:$key," ;
+			}		
+			$szBind = substr($szBind, 0, strlen($szBind) - 1);
+		
+			$szQuery = "UPDATE `match` SET $szBind WHERE match_id = :match_id";
 			$st = $this->db->prepare($szQuery);		
-			$st->bindParam(':league_id', $league_id);
-			$st->bindParam(':team_home_id', $team_home_id);	
-			$st->bindParam(':team_away_id', $team_away_id);
-			$st->bindParam(':match_home_goals', $match_home_goals);
-			$st->bindParam(':match_away_goals', $match_away_goals);
-			$st->bindParam(':match_first_result', $match_first_result, PDO::PARAM_STR);
-			$st->bindParam(':match_first_time', $match_first_time, PDO::PARAM_STR);
-			$st->bindParam(':match_second_time', $match_second_time, PDO::PARAM_STR);
-			$st->bindParam(':match_handicap', $match_handicap, PDO::PARAM_STR);
-			$st->bindParam(':match_home_back', $match_home_back, PDO::PARAM_STR);
-			$st->bindParam(':match_away_back', $match_away_back, PDO::PARAM_STR);
-			$st->bindParam(':match_status', $match_status);
-			$st->bindParam(':m7_id', $m7_id);
-			$st->execute();
-		}
-		else{
-			throw new Exception("Category is not define!");
-		}
-		return $this->db->lastInsertId(); 	
-	}
-	
-	public function updateMatchStatus($id, $status){
-		if($this->db){ 
-			$szQuery = "UPDATE `match` SET
-						status = :status
-						WHERE id = :id";
-			$st = $this->db->prepare($szQuery);		
-			$st->bindParam(':status', $status);
-			$st->bindParam(':id', $id);
+			
+			// Bind Param
+			$lsValue = array();
+			$i = 0;
+			foreach($lsData as $key => $value)	{
+				$lsValue[$i] = $value;
+				if (is_string($value))
+					$st->bindParam(":$key" , $lsValue[$i], PDO::PARAM_STR);
+				else
+					$st->bindParam(":$key", $lsValue[$i]);
+				$i++;
+			}
+			$st->bindParam(':match_id', $match_id);
+			
 			$st->execute();	
 		}
 		else{
 			throw new Exception("Category is not define!");
 		}	
 	}
-	
-	public function updateMatchGoals($id, $home_goals, $away_goals){
-		if($this->db){
-			$szQuery = "UPDATE `match` SET
-						home_goals = :home_goals,
-						away_goals = :away_goals
-						WHERE id = :id";
-			$st = $this->db->prepare($szQuery);		
-			$st->bindParam(':home_goals', $home_goals);
-			$st->bindParam(':away_goals', $away_goals);
-			$st->bindParam(':id', $id);
-			$st->execute();	
-		}
-		else{
-			throw new Exception("Category is not define!");
-		}	
-	}	
 	
 	public function deleteMatch($id){
 		if($this->db){
