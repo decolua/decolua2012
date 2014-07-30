@@ -29,6 +29,8 @@ require_once('helpers.php');
 //Required Models
 require_once('model/TeamModel.php');
 require_once('model/7mModel.php');
+require_once('model/MatchModel.php');
+
 
 //Require Engine
 ?>

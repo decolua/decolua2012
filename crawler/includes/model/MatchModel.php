@@ -15,19 +15,25 @@ class MatchModel
 		}			
 	}
 	
-	public function insertMatch($fk_home_id, $fk_away_id, $status, $start_time, $home_goals	, $away_goals, $fk_league_id){
+	public function insertMatch($league_id, $team_home_id, $team_away_id, $match_home_goals, $match_away_goals, $match_first_result, $match_first_time, $match_second_time, $match_handicap, $match_home_back, $match_away_back, $match_status, $m7_id){
 		if($this->db){
 			$szQuery = "INSERT INTO 
-						match(fk_home_id, fk_away_id, status, start_time, home_goals, away_goals, fk_league_id) 
-						VALUES (:fk_home_id, :fk_away_id, :status, :start_time, :home_goals, :away_goals, fk_league_id)";
+						`match`(league_id, team_home_id, team_away_id, match_home_goals, match_away_goals, match_first_result, match_first_time, match_second_time, match_handicap, match_home_back, match_away_back, match_status, m7_id) 
+						VALUES (:league_id, :team_home_id, :team_away_id, :match_home_goals, :match_away_goals, :match_first_result, :match_first_time, :match_second_time, :match_handicap, :match_home_back, :match_away_back, :match_status, :m7_id)";
 			$st = $this->db->prepare($szQuery);		
-			$st->bindParam(':fk_home_id', $fk_home_id);
-			$st->bindParam(':fk_away_id', $fk_away_id);	
-			$st->bindParam(':status', $status);
-			$st->bindParam(':start_time', $start_time, PDO::PARAM_STR);
-			$st->bindParam(':home_goals', $home_goals);
-			$st->bindParam(':away_goals', $away_goals);
-			$st->bindParam(':fk_league_id', $fk_league_id);
+			$st->bindParam(':league_id', $league_id);
+			$st->bindParam(':team_home_id', $team_home_id);	
+			$st->bindParam(':team_away_id', $team_away_id);
+			$st->bindParam(':match_home_goals', $match_home_goals);
+			$st->bindParam(':match_away_goals', $match_away_goals);
+			$st->bindParam(':match_first_result', $match_first_result, PDO::PARAM_STR);
+			$st->bindParam(':match_first_time', $match_first_time, PDO::PARAM_STR);
+			$st->bindParam(':match_second_time', $match_second_time, PDO::PARAM_STR);
+			$st->bindParam(':match_handicap', $match_handicap, PDO::PARAM_STR);
+			$st->bindParam(':match_home_back', $match_home_back, PDO::PARAM_STR);
+			$st->bindParam(':match_away_back', $match_away_back, PDO::PARAM_STR);
+			$st->bindParam(':match_status', $match_status);
+			$st->bindParam(':m7_id', $m7_id);
 			$st->execute();
 		}
 		else{

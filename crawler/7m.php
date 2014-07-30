@@ -144,14 +144,14 @@ class Crawler{
 			$lsData =  $this->my_explode(",", $szData);
 			$pObject = new stdClass();
 			$pObject->match_id = intval($szId);
-			$pObject->match_status = $lsData[0];
-			$pObject->home_goals = $lsData[1];
-			$pObject->away_goals = $lsData[2];
+			$pObject->match_status = intval($lsData[0]);
+			$pObject->home_goals = intval($lsData[1]);
+			$pObject->away_goals = intval($lsData[2]);
 			if (isset($lsData[8])){
-				$pObject->first_time = $this->mysub($lsData[8]);
+				$pObject->first_time = str_to_time($this->mysub($lsData[8]));
 			}
 			else{
-				$pObject->first_time = "";
+				$pObject->first_time = "0000-00-00 00:00:00";
 			}
 			$pObject->first_result = $this->mysub($lsData[6]);
 			$pObject->second_time = $this->mysub($lsData[5]);

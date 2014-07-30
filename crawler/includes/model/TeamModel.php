@@ -15,14 +15,24 @@ class TeamModel
 		}			
 	}
 	
-	public function getTeamByName($name){
+	public function getTeamByName($team_name){
 		if($this->db) {
-			$st = $this->db->prepare("SELECT * FROM team WHERE name=:name");
-			$st->bindParam(':name', $name);
+			$st = $this->db->prepare("SELECT * FROM team WHERE team_name=:team_name");
+			$st->bindParam(':team_name', $team_name, PDO::PARAM_STR);
 			$st->execute();
 			return $st->fetchAll(PDO::FETCH_CLASS);
 		}			
 	}	
+	
+	public function checkMatchByTeamName($home, $away){
+		if($this->db) {
+			$st = $this->db->prepare("SELECT * FROM team WHERE name=:home OR name=:away");
+			$st->bindParam(':home', $home, PDO::PARAM_STR);
+			$st->bindParam(':away', $away, PDO::PARAM_STR);
+			$st->execute();
+			return $st->fetchAll(PDO::FETCH_CLASS);
+		}			
+	}
 	
 	public function insertTeam($name, $short_name, $stadium, $avatar, $fans_num, $fk_league_id){
 		if($this->db){

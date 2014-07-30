@@ -6,27 +6,25 @@ class M7Model
         $this->db = $db;
     }
 	
-	public function get7mMatchById($m7_id){
+	public function get7mMatchById($m7_match_id){
 		if($this->db) {
-			$st = $this->db->prepare("SELECT * FROM m7 WHERE m7_id=:m7_id");
-			$st->bindParam(':m7_id', $m7_id);
+			$st = $this->db->prepare("SELECT * FROM m7 WHERE m7_match_id=:m7_match_id");
+			$st->bindParam(':m7_match_id', $m7_match_id);
 			$st->execute();
 			return $st->fetchAll(PDO::FETCH_CLASS);
 		}			
 	}
 	
-	public function insertM7($m7_match_id, $m7_match_status, $m7_crawler_s, $avatar, $fans_num, $fk_league_id){
+	public function insertM7($m7_match_id, $m7_match_status, $m7_crawler_status, $match_id){
 		if($this->db){
 			$szQuery = "INSERT INTO 
-						m7(name, short_name, stadium, avatar, fans_num, fk_league_id) 
-						VALUES (:name, :short_name, :stadium, :avatar, :fans_num, :fk_league_id)";
+						m7(m7_match_id, m7_match_status, m7_crawler_status, match_id) 
+						VALUES (:m7_match_id, :m7_match_status, :m7_crawler_status, :match_id)";
 			$st = $this->db->prepare($szQuery);		
-			$st->bindParam(':name', $name, PDO::PARAM_STR);
-			$st->bindParam(':short_name', $short_name, PDO::PARAM_STR);	
-			$st->bindParam(':stadium', $stadium, PDO::PARAM_STR);
-			$st->bindParam(':avatar', $avatar, PDO::PARAM_STR);
-			$st->bindParam(':fans_num', $fans_num, PDO::PARAM_INT);
-			$st->bindParam(':fk_league_id', $fk_league_id, PDO::PARAM_INT);
+			$st->bindParam(':m7_match_id', $m7_match_id);
+			$st->bindParam(':m7_match_status', $m7_match_status);	
+			$st->bindParam(':m7_crawler_status', $m7_crawler_status);
+			$st->bindParam(':match_id', $match_id);
 			$st->execute();
 		}
 		else{

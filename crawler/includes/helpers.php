@@ -2,6 +2,14 @@
 	function my_get_contents($szUrl, $szProxy){
 		return file_get_contents($szProxy . "?url=" . $szUrl);
 	}
+	
+	function str_to_time($szStr){
+		$lsSplit = explode(",", $szStr);
+		if (count($lsSplit) != 6)
+			return "0000-00-00 00:00:00";
+			
+		return $lsSplit[0] . '-' . $lsSplit[1] . '-' . $lsSplit[2] . ' ' . $lsSplit[3] . ':' . $lsSplit[4] . ':00';
+	}
 
 	function filterContent($szContent)
 	{
