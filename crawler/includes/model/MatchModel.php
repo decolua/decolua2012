@@ -18,8 +18,7 @@ class MatchModel
 	public function getLivingMatch(){
 		if($this->db) {
 			$st = $this->db->prepare("
-				SELECT * FROM `match` WHERE (match_status > 0 AND match_status < 4) 
-											OR (match_status = 17 AND match_handicap = '')");
+				SELECT * FROM `match` WHERE (match_status > 0 AND match_status < 4) OR (match_status = 17)");
 			$st->execute();
 			return $st->fetchAll(PDO::FETCH_CLASS); 
 		}			

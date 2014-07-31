@@ -6,6 +6,15 @@ class LeagueModel
         $this->db = $db;
     }
 	
+	public function getAllLeague(){
+		if($this->db) {
+			$st = $this->db->prepare("SELECT * FROM league ORDER BY league_id DESC");
+			$st->bindParam(':nStart', $nStart, PDO::PARAM_INT);
+			$st->execute();
+			return $st->fetchAll(PDO::FETCH_CLASS);
+		}		
+	}		
+	
 	public function getLeagueById($id){
 		if($this->db) {
 			$st = $this->db->prepare("SELECT * FROM league WHERE id=:id");

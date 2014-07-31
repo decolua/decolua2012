@@ -8,7 +8,7 @@
 	
 	// Init Crawler 
 	$pCrawler->_bUseProxy = false;
-	$pMatchData = $pCrawler->getLiveData(); 
+	$pMatchData = $pCrawler->getLiveData();  
 	
 	$nCount = count($pMatchData);
 	for ($i=0; $i<$nCount; $i++){
@@ -43,7 +43,7 @@
 			}
 		}
 	}
-	
+	 
 	// status
 	// 1  : first half
 	// 2  : between match
