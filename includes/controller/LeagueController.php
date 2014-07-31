@@ -11,9 +11,6 @@ class LeagueController {
 	
 	public function getAll() {
 		$pData = $this->getLeagueModel()->getAllLeague();
-		//$nCount = $this->getLeagueModel()->countLeague();
-		//$pObject->total = $nCount;
-		
 		$pObject = new stdClass; 
 		$pObject->leagues = $pData;
 		echo json_encode($pObject);

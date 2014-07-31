@@ -46,10 +46,10 @@
 	 
 	// status
 	// 1  : first half
-	// 2  : between match
+	// 2  : between 2 half
 	// 3  : second half
 	// 4  : finished
 	// 13 : postponed
 	// 15 : Undecided
-	// 17 : waiting
+	// 17 : Be Going To
 ?>

@@ -15,6 +15,15 @@ class MatchModel
 		}			
 	}
 	
+	public function getLivingMatch(){
+		if($this->db) {
+			$st = $this->db->prepare(
+				"SELECT livematch.*,team_name as team_away_name FROM livematch,team WHERE team_away_id=team_id");
+			$st->execute();
+			return $st->fetchAll(PDO::FETCH_CLASS); 
+		}	
+	}
+	
 	public function insertMatch($fk_home_id, $fk_away_id, $status, $start_time, $home_goals	, $away_goals, $fk_league_id){
 		if($this->db){
 			$szQuery = "INSERT INTO 
@@ -51,23 +60,6 @@ class MatchModel
 		}	
 	}
 	
-	public function updateMatchGoals($id, $home_goals, $away_goals){
-		if($this->db){
-			$szQuery = "UPDATE match SET
-						home_goals = :home_goals,
-						away_goals = :away_goals
-						WHERE id = :id";
-			$st = $this->db->prepare($szQuery);		
-			$st->bindParam(':home_goals', $home_goals);
-			$st->bindParam(':away_goals', $away_goals);
-			$st->bindParam(':id', $id);
-			$st->execute();	
-		}
-		else{
-			throw new Exception("Category is not define!");
-		}	
-	}	
-	
 	public function deleteMatch($id){
 		if($this->db){
 			$szQuery = "DELETE FROM match WHERE id=:id";
@@ -79,19 +71,5 @@ class MatchModel
 			throw new Exception("Category is not define!");
 		}		
 	}
-	
-	public function visibleMatch($id){
-		if($this->db){
-			$szQuery = "UPDATE match SET
-						visibile = 1 - visibile
-						WHERE id = :id";
-			$st = $this->db->prepare($szQuery);		
-			$st->bindParam(':id', $id, PDO::PARAM_INT);
-			$st->execute();	
-		}
-		else{
-			throw new Exception("Category is not define!");
-		}	
-	}	
 }
 ?>

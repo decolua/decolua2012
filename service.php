@@ -10,8 +10,6 @@ if (isset($_GET['nav']))
 		if (isset($_GET['info'])){
 			if ($_GET['info']=="all")
 				$page->getAll();
-			//else if ($_GET['info']=="del")
-			//	$page->delete();					
 		}	
 	}
 	else if ($_GET['nav']=="league"){
@@ -19,8 +17,13 @@ if (isset($_GET['nav']))
 		if (isset($_GET['info'])){
 			if ($_GET['info']=="all")
 				$page->getAll();
-			//else if ($_GET['info']=="del")
-			//	$page->delete();					
+		}
+	}
+	else if ($_GET['nav']=="match"){
+		$page = new MatchController();
+		if (isset($_GET['info'])){
+			if ($_GET['info']=="live")
+				$page->getLiving();
 		}
 	}
 	else if ($_GET['nav']=="user"){
