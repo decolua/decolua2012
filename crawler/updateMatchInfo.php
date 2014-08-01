@@ -32,9 +32,7 @@
 				if ($pDBMatch[$i]->match_first_result == "" && $pMatchData[$j]->first_result !="")	
 					$pObject->match_first_result = $pMatchData[$j]->first_result;
 				
-				if ($pObject->match_status == 3 && 
-						$pDBMatch[$i]->match_second_time == "0000-00-00 00:00:00" && $
-						pMatchData[$j]->second_time != "0000-00-00 00:00:00")	
+				if ($pMatchData[$j]->match_status == 3 && $pDBMatch[$i]->match_second_time == "0000-00-00 00:00:00" && $pMatchData[$j]->second_time != "0000-00-00 00:00:00")	
 					$pObject->match_second_time = $pMatchData[$j]->second_time;					
 				
 				if ($pDBMatch[$i]->match_handicap == "" && $pMatchData[$j]->handicap != ""){
