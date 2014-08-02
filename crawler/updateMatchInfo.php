@@ -7,7 +7,7 @@
 	$pMatchModel = new MatchModel();
 	
 	// Init Crawler 
-	$pCrawler->_bUseProxy = false;
+	$pCrawler->_bUseProxy = true;
 	
 	// Fetch Live Data
 	$pMatchData = $pCrawler->getLiveData();
