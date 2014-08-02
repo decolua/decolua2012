@@ -29,11 +29,11 @@ if (isset($_GET['nav']))
 	else if ($_GET['nav']=="user"){
 		$page = new UserController();
 		if (isset($_GET['action'])){
-			if ($_GET['ac']=="login")
+			if ($_GET['action']=="login")
 				$page->login();
-			if ($_GET['ac']=="register")
+			if ($_GET['action']=="register")
 				$page->register();		
-			if ($_GET['ac']=="pass")
+			if ($_GET['action']=="pass")
 				$page->getpass();					
 		}
 	}

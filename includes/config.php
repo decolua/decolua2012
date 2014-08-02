@@ -31,11 +31,13 @@ require_once('connect.php');
 require_once('controller/LeagueController.php');
 require_once('controller/TeamController.php');
 require_once('controller/MatchController.php');
+require_once('controller/UserController.php');
 
 //Required Models,
 require_once('model/LeagueModel.php');
 require_once('model/TeamModel.php');
 require_once('model/MatchModel.php');
+require_once('model/UserModel.php');
 
 //Require Engine
 

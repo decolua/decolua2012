@@ -15,10 +15,10 @@ class UserModel
 		}			
 	}
 	
-	public function getUserByName($name){
+	public function getUserByEmail($user_email){
 		if($this->db) {
-			$st = $this->db->prepare("SELECT * FROM user WHERE name=:name");
-			$st->bindParam(':name', $name);
+			$st = $this->db->prepare("SELECT * FROM user WHERE user_email=:user_email");
+			$st->bindParam(':user_email', $user_email);
 			$st->execute();
 			return $st->fetchAll(PDO::FETCH_CLASS);
 		}			
@@ -61,6 +61,42 @@ class UserModel
 		}
 		return $this->db->lastInsertId(); 	
 	}		
+	
+	public function update($user_id, $pObject){
+		if($this->db){
+			$szBind = "";		
+		
+			$lsData = get_object_vars($pObject);
+			if (count($lsData) == 0)
+				return;
+			
+			foreach($lsData as $key => $value)	{
+				$szBind .= "$key =:$key," ;
+			}		
+			$szBind = substr($szBind, 0, strlen($szBind) - 1);
+		
+			$szQuery = "UPDATE `user` SET $szBind WHERE user_id = :user_id";
+			$st = $this->db->prepare($szQuery);		
+			
+			// Bind Param
+			$lsValue = array();
+			$i = 0;
+			foreach($lsData as $key => $value)	{
+				$lsValue[$i] = $value;
+				if (is_string($value))
+					$st->bindParam(":$key" , $lsValue[$i], PDO::PARAM_STR);
+				else
+					$st->bindParam(":$key", $lsValue[$i]);
+				$i++;
+			}
+			$st->bindParam(':user_id', $user_id);
+			
+			$st->execute();	
+		}
+		else{
+			throw new Exception("Category is not define!");
+		}	
+	}	
 	
 	public function insertUser($email, $name, $pass, $birthday, $country, $avatar, $sex, $fk_team_id, $cash){
 		if($this->db){
