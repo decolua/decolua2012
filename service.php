@@ -28,7 +28,14 @@ if (isset($_GET['nav']))
 	}
 	else if ($_GET['nav']=="user"){
 		$page = new UserController();
-		$page->start();
+		if (isset($_GET['action'])){
+			if ($_GET['ac']=="login")
+				$page->login();
+			if ($_GET['ac']=="register")
+				$page->register();		
+			if ($_GET['ac']=="pass")
+				$page->getpass();					
+		}
 	}
 	else if ($_GET['nav']=="nation"){
 		$page = new NationController();
