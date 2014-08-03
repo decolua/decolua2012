@@ -18,11 +18,20 @@ class MatchModel
 	public function getLivingMatch(){
 		if($this->db) {
 			$st = $this->db->prepare(
-				"SELECT livematch.*,team_name as team_away_name FROM livematch,team WHERE team_away_id=team_id");
+				"SELECT match_id, league_id, team_home_id, team_away_id, match_home_goals, match_away_goals, match_first_result, match_first_time, match_second_time, match_status FROM `match` WHERE match_status > 0 AND match_status < 4");
 			$st->execute();
 			return $st->fetchAll(PDO::FETCH_CLASS); 
 		}	
 	}
+	
+	public function getUpComingMatch(){
+		if($this->db) {
+			$st = $this->db->prepare(
+				"SELECT match_id, league_id, team_home_id, team_away_id, match_home_goals, match_away_goals, match_first_time, match_handicap, match_home_back, match_away_back, match_status FROM `match` WHERE match_status = 17");
+			$st->execute();
+			return $st->fetchAll(PDO::FETCH_CLASS); 
+		}	
+	}	
 	
 	public function insertMatch($fk_home_id, $fk_away_id, $status, $start_time, $home_goals	, $away_goals, $fk_league_id){
 		if($this->db){

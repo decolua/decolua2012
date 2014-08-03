@@ -15,6 +15,14 @@ class BettingModel
 		}			
 	}
 	
+	public function getBettingByIdList($szId){
+		if($this->db) {
+			$st = $this->db->prepare("SELECT betting_id, betting_status FROM betting WHERE betting_id IN ($szId)");
+			$st->execute();
+			return $st->fetchAll(PDO::FETCH_CLASS);
+		}			
+	}	
+	
 	public function insert($pObject){
 		if($this->db){
 			$lsData = get_object_vars($pObject);
@@ -52,6 +60,8 @@ class BettingModel
 		}
 		return $this->db->lastInsertId(); 	
 	}
+	
+	
 	
 	public function deleteBetting($id){
 		if($this->db){

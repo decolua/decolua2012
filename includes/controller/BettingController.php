@@ -61,6 +61,27 @@ class BettingController {
 		$pRetObject->betting_id = $nBetId;	
 		echo json_encode($pRetObject);
 	}
+	
+	public function getResult(){
+		if (!isset($_GET['ids']) || $_GET['ids'] == 0)
+			return;	
+			
+		$lsBettingId = explode('|', $_GET['ids']);
+
+		$nCount = count($lsBettingId);
+		$szListId = "";
+		for ($i=0; $i<$nCount; $i++){
+			$szListId .= intval($lsBettingId[$i]) . ",";
+		}
+		if ($szListId != "")
+			$szListId .= '0';
+			
+		$pBetting = $this->getBettingModel()->getBettingByIdList($szListId);			
+		$pObject = new stdClass; 
+		$pObject->bettings = $pBetting;
+		echo json_encode($pObject); 		
+		
+	}
 }
 
 ?>
