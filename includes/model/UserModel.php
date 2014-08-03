@@ -15,6 +15,16 @@ class UserModel
 		}			
 	}
 	
+	public function getUserByIdAndToken($user_id, $user_token){
+		if($this->db) {
+			$st = $this->db->prepare("SELECT * FROM user WHERE user_id=:user_id AND user_token=:user_token");
+			$st->bindParam(':user_id', $user_id);
+			$st->bindParam(':user_token', $user_token);
+			$st->execute();
+			return $st->fetchAll(PDO::FETCH_CLASS);
+		}			
+	}		
+	
 	public function getUserByEmail($user_email){
 		if($this->db) {
 			$st = $this->db->prepare("SELECT * FROM user WHERE user_email=:user_email");
@@ -23,6 +33,17 @@ class UserModel
 			return $st->fetchAll(PDO::FETCH_CLASS);
 		}			
 	}	
+	
+	public function getUserByEmailAndPass($user_email, $user_pass)
+	{
+		if($this->db) {
+			$st = $this->db->prepare("SELECT * FROM user WHERE user_email=:user_email AND user_pass=:user_pass");
+			$st->bindParam(':user_email', $user_email, PDO::PARAM_STR);
+			$st->bindParam(':user_pass', $user_pass, PDO::PARAM_STR);
+			$st->execute();
+			return $st->fetchAll(PDO::FETCH_CLASS);
+		}	
+	}
 	
 	public function insert($pObject){
 		if($this->db){

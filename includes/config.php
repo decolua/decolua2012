@@ -32,12 +32,14 @@ require_once('controller/LeagueController.php');
 require_once('controller/TeamController.php');
 require_once('controller/MatchController.php');
 require_once('controller/UserController.php');
+require_once('controller/BettingController.php');
 
 //Required Models,
 require_once('model/LeagueModel.php');
 require_once('model/TeamModel.php');
 require_once('model/MatchModel.php');
 require_once('model/UserModel.php');
+require_once('model/BettingModel.php');
 
 //Require Engine
 

@@ -1,6 +1,11 @@
 <?php
 class UserController {
 
+	public function genToken()
+	{
+		return md5(rand(1, 100000000));
+	}
+
 	private function getUserModel() {
 		$getUserModel =  new UserModel();
 		return $getUserModel;
@@ -12,9 +17,34 @@ class UserController {
 	}		
 	
 	public function login() {
-		$pObject = new stdClass; 
-		$pObject->teams = $pData;
-		echo json_encode($pObject);
+		$pRetObject = new stdClass; 
+		if (!isset($_POST["email"]) || !isset($_POST["password"]) || $_POST["email"]=="" || $_POST["password"]==""){
+			$pRetObject->result = "false";
+			$pRetObject->msg = "The email or password is invalid.";
+			echo json_encode($pRetObject);
+			return;		
+		}
+		
+		$pUser = $this->getUserModel()->getUserByEmailAndPass($_POST["email"], $_POST["password"]);
+		if ($pUser==null){
+			$pRetObject->result = "false";
+			$pRetObject->msg = "The email or password is invalid.";
+			echo json_encode($pRetObject);
+			return;		
+		}
+		
+		$user_token = $this->genToken();
+		$pInfo = new stdClass;
+		$pInfo->user_token = $user_token;
+		$this->getUserModel()->update($pUser[0]->user_id, $pInfo);		
+		
+		$pRetObject->result = "true";
+		$objUser = new stdClass; 
+		$objUser->user_id = $pUser[0]->user_id;
+		$objUser->token = $user_token;
+		$objUser->cash = $pUser[0]->user_cash;
+		$pRetObject->user = $objUser;		
+		echo json_encode($pRetObject);
 	}
 	
 	public function register() {
@@ -32,7 +62,7 @@ class UserController {
 		}
 		if (preg_match($pattern, $_POST["email"]) !== 1) {
 			$pRetObject->result = "false";
-			$pRetObject->msg = "Email Address is not valid";
+			$pRetObject->msg = "Email Address is invalid";
 			echo json_encode($pRetObject);
 			return;
 		}		
@@ -113,7 +143,7 @@ class UserController {
 		// Insert User
 		$user_id = $this->getUserModel()->insert($pInfo);
 		$pInfo = new stdClass;
-		$pInfo->user_token = $user_id + time();
+		$pInfo->user_token = $this->genToken();
 		$this->getUserModel()->update($user_id, $pInfo);
 		
 		// Return

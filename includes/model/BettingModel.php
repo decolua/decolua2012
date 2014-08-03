@@ -15,15 +15,36 @@ class BettingModel
 		}			
 	}
 	
-	public function insertBetting($fk_user_id, $fk_odds_id, $bet_cash){
+	public function insert($pObject){
 		if($this->db){
+			$lsData = get_object_vars($pObject);
+			
+			$szFieldList = "";
+			$szBindList = "";
+			foreach($lsData as $key => $value)	{
+				$szFieldList .= $key . ',';
+				$szBindList .= ':' . $key . ',';
+			}				
+
+			$szFieldList = substr($szFieldList, 0, strlen($szFieldList) - 1);
+			$szBindList = substr($szBindList, 0, strlen($szBindList) - 1);
+			
 			$szQuery = "INSERT INTO 
-						betting(fk_user_id, fk_odds_id, bet_cash) 
-						VALUES (:fk_user_id, :fk_odds_id, :bet_cash)";
-			$st = $this->db->prepare($szQuery);		
-			$st->bindParam(':fk_user_id', $fk_user_id);
-			$st->bindParam(':fk_odds_id', $fk_odds_id);	
-			$st->bindParam(':bet_cash', $bet_cash);
+						`betting`($szFieldList) 
+						VALUES ($szBindList)";
+			$st = $this->db->prepare($szQuery);	
+
+			$lsValue = array();
+			$i = 0;
+			foreach($lsData as $key => $value)	{
+				$lsValue[$i] = $value;
+				if (is_string($value))
+					$st->bindParam(":$key" , $lsValue[$i], PDO::PARAM_STR);
+				else
+					$st->bindParam(":$key", $lsValue[$i]);
+				$i++;
+			}
+			
 			$st->execute();
 		}
 		else{

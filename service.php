@@ -31,12 +31,23 @@ if (isset($_GET['nav']))
 		if (isset($_GET['action'])){
 			if ($_GET['action']=="login")
 				$page->login();
-			if ($_GET['action']=="register")
+			else if ($_GET['action']=="register")
 				$page->register();		
-			if ($_GET['action']=="pass")
+			else if ($_GET['action']=="pass")
 				$page->getpass();					
 		}
 	}
+	else if ($_GET['nav']=="betting"){
+		$page = new BettingController();
+		if (isset($_GET['action'])){
+			if ($_GET['action']=="bet")
+				$page->bet();					
+		}
+		else if (isset($_GET['info'])){
+			if ($_GET['info']=="bet")
+				$page->bet();					
+		}
+	}	
 	else if ($_GET['nav']=="nation"){
 		$page = new NationController();
 		$page->start();

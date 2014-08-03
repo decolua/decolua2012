@@ -6,10 +6,10 @@ class MatchModel
         $this->db = $db;
     }
 	
-	public function getMatchById($id){
+	public function getMatchById($match_id){
 		if($this->db) {
-			$st = $this->db->prepare("SELECT * FROM match WHERE id=:id");
-			$st->bindParam(':id', $id);
+			$st = $this->db->prepare("SELECT * FROM `match` WHERE match_id=:match_id");
+			$st->bindParam(':match_id', $match_id);
 			$st->execute();
 			return $st->fetchAll(PDO::FETCH_CLASS);
 		}			
