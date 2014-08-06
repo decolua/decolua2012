@@ -1,7 +1,7 @@
 <?php
 ob_start();
 error_reporting(E_ALL);
-ini_set('display_errors', 'On');
+ini_set('display_errors', 'Off');
 header('Content-Type: text/html; charset=utf-8');
 header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
 header("Cache-Control: post-check=0, pre-check=0", false);
