@@ -83,6 +83,17 @@ class UserModel
 		return $this->db->lastInsertId(); 	
 	}		
 	
+	public function updateCash($user_id, $nCash){
+		if($this->db) {
+			$st = $this->db->prepare(
+				"UPDATE `user` 
+				SET user_cash = user_cash + $nCash
+				WHERE user_id=:user_id");
+			$st->bindParam(':user_id', $user_id);
+			$st->execute();
+		}		
+	}
+	
 	public function update($user_id, $pObject){
 		if($this->db){
 			$szBind = "";		

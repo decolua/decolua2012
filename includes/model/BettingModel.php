@@ -23,6 +23,16 @@ class BettingModel
 		}			
 	}	
 	
+	public function getBettingByMatchId($match_id, $betting_status){
+		if($this->db) {
+			$st = $this->db->prepare("SELECT * FROM betting WHERE match_id=:match_id AND betting_status=:betting_status");
+			$st->bindParam(':match_id', $match_id, PDO::PARAM_INT);
+			$st->bindParam(':betting_status', $betting_status, PDO::PARAM_INT);
+			$st->execute();
+			return $st->fetchAll(PDO::FETCH_CLASS);
+		}			
+	}		
+	
 	public function insert($pObject){
 		if($this->db){
 			$lsData = get_object_vars($pObject);
@@ -61,7 +71,41 @@ class BettingModel
 		return $this->db->lastInsertId(); 	
 	}
 	
-	
+	public function update($betting_id, $pObject){
+		if($this->db){
+			$szBind = "";		
+		
+			$lsData = get_object_vars($pObject);
+			if (count($lsData) == 0)
+				return;
+			
+			foreach($lsData as $key => $value)	{
+				$szBind .= "$key =:$key," ;
+			}		
+			$szBind = substr($szBind, 0, strlen($szBind) - 1);
+		
+			$szQuery = "UPDATE `betting` SET $szBind WHERE betting_id = :betting_id";
+			$st = $this->db->prepare($szQuery);		
+			
+			// Bind Param
+			$lsValue = array();
+			$i = 0;
+			foreach($lsData as $key => $value)	{
+				$lsValue[$i] = $value;
+				if (is_string($value))
+					$st->bindParam(":$key" , $lsValue[$i], PDO::PARAM_STR);
+				else
+					$st->bindParam(":$key", $lsValue[$i]);
+				$i++;
+			}
+			$st->bindParam(':betting_id', $betting_id);
+			
+			$st->execute();	
+		}
+		else{
+			throw new Exception("Category is not define!");
+		}	
+	}	
 	
 	public function deleteBetting($id){
 		if($this->db){

@@ -55,7 +55,7 @@ if (isset($_GET['nav']))
 			if ($_GET['info']=="result")
 				$page->getResult();					
 		}
-	}	
+	}
 	else if ($_GET['nav']=="nation"){
 		$page = new NationController();
 		$page->start();

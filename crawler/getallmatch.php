@@ -34,9 +34,11 @@
 				$pObject->match_first_result = $pMatchData[$i]->first_result;
 				$pObject->match_first_time = $pMatchData[$i]->first_time;
 				$pObject->match_second_time = $pMatchData[$i]->second_time;
-				$pObject->match_handicap = $pMatchData[$i]->handicap;
-				$pObject->match_home_back = $pMatchData[$i]->home_back;				
-				$pObject->match_away_back = $pMatchData[$i]->away_back;
+				if ($pMatchData[$i]->handicap != ""){
+					$pObject->match_handicap = floatval($pMatchData[$i]->handicap) * 4;
+					$pObject->match_home_back = floatval($pMatchData[$i]->home_back) * 100;			
+					$pObject->match_away_back = floatval($pMatchData[$i]->away_back) * 100;
+				}
 				$pObject->match_status = $pMatchData[$i]->match_status;	
 				$pObject->m7_id = $pMatchData[$i]->match_id;			
 				$pMatchModel->insert($pObject);			

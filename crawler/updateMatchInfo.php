@@ -1,4 +1,4 @@
-<?php		
+<?php	
 	include("7m.php");		
 	include("includes/config.php");		
 	$pCrawler = new Crawler();		
@@ -15,11 +15,11 @@
 	// Query Live Data
 	$pDBMatch = $pMatchModel->getLivingMatch();
 	
-	$nDBCount = count($pDBMatch); 
+	$nDBCount = count($pDBMatch);
 	$nMatchCount = count($pMatchData);
 	
 	for ($i=0; $i<$nDBCount; $i++){
-		for ($j=0; $j<$nMatchCount; $j++){
+		for ($j=0; $j<$nMatchCount; $j++){ 
 			if ($pDBMatch[$i]->m7_id == $pMatchData[$j]->match_id){
 				$pObject = new stdClass();
 				
@@ -33,12 +33,12 @@
 					$pObject->match_first_result = $pMatchData[$j]->first_result;
 				
 				if ($pMatchData[$j]->match_status == 3 && $pDBMatch[$i]->match_second_time == "0000-00-00 00:00:00" && $pMatchData[$j]->second_time != "0000-00-00 00:00:00")	
-					$pObject->match_second_time = $pMatchData[$j]->second_time;					
+					$pObject->match_second_time = $pMatchData[$j]->second_time;
 				
 				if ($pDBMatch[$i]->match_handicap == "" && $pMatchData[$j]->handicap != ""){
-					$pObject->match_handicap = $pMatchData[$j]->handicap;
-					$pObject->match_home_back = $pMatchData[$j]->home_back;				
-					$pObject->match_away_back = $pMatchData[$j]->away_back;					
+					$pObject->match_handicap = floatval($pMatchData[$j]->handicap) * 4;
+					$pObject->match_home_back = floatval($pMatchData[$j]->home_back) * 100;	
+					$pObject->match_away_back = floatval($pMatchData[$j]->away_back) * 100;	
 				}
 
 				if ($pDBMatch[$i]->match_status != $pMatchData[$j]->match_status)
