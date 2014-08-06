@@ -8,9 +8,10 @@ class TeamModel
 	
 	public function getAllTeam(){
 		if($this->db) { 
-			$st = $this->db->prepare("SELECT team_id, team_name, team_short_name, team.league_id, team_city, team_stadium, team_avatar, team_fans_num FROM team,league WHERE team.league_id=league.league_id AND league.league_visible=1 ORDER BY team_id DESC");
+			//$st = $this->db->prepare("SELECT team_id, team_name, team_short_name, team.league_id, team_city, team_stadium, team_avatar, team_fans_num FROM team,league WHERE team.league_id=league.league_id AND league.league_visible=1 ORDER BY team_id DESC");
+			$st = $this->db->prepare("SELECT team_id, team_name, team_short_name, league_id, team_city, team_stadium, team_avatar, team_fans_num FROM team ORDER BY team_id DESC");
 			$st->execute();
-			return $st->fetchAll(PDO::FETCH_CLASS);
+			return $st->fetchAll(PDO::FETCH_CLASS); 
 		}		
 	}		
 	
