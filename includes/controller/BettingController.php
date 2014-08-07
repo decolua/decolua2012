@@ -24,17 +24,17 @@ class BettingController {
 			return;			
 
 		if (!isset($_POST['match_id']) || intval($_POST['match_id']) == 0)
-			return;			
-
-		if (!isset($_POST['cash']) || intval($_POST['cash']) == 0)
 			return;	
-
+			
+		if (!isset($_POST['betting_cash']) || intval($_POST['betting_cash']) == 0)
+			return;	
+			
 		if (!isset($_POST['odds_title']) || $_POST['odds_title'] == "")
 			return;			
 
 		// Check User 
 		$pUser = $this->getUserModel()->getUserByIdAndToken($_POST['user_id'], $_POST['user_token']);
-		if ($pUser == null || $_POST['cash'] > $pUser[0]->user_cash)
+		if ($pUser == null || $_POST['betting_cash'] > $pUser[0]->user_cash)
 			return;
 			
 		// Check Match 
@@ -47,19 +47,19 @@ class BettingController {
 		$objBet->user_id = $_POST['user_id'];
 		$objBet->match_id = $_POST['match_id'];
 		$objBet->odds_title = $_POST['odds_title'];
-		$objBet->betting_cash = $_POST['cash'];
+		$objBet->betting_cash = $_POST['betting_cash'];
 		$nBetId = $this->getBettingModel()->insert($objBet);
 		
 		// Update Cash
 		$pInfo = new stdClass;
-		$pInfo->user_cash = $pUser[0]->user_cash - $_POST['cash'];
+		$pInfo->user_cash = $pUser[0]->user_cash - $_POST['betting_cash'];
 		$this->getUserModel()->update($_POST['user_id'], $pInfo);		
 		
 		// Return
 		$pRetObject = new stdClass; 
 		$pRetObject->result = "true";
 		$pRetObject->betting_id = $nBetId;	
-		echo json_encode($pRetObject);
+		echo json_encode($pRetObject); 
 	}
 	
 	public function getResult(){
