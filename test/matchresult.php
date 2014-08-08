@@ -13,9 +13,11 @@ function genMatchResult($nHandicap, $nHomeBack, $nAwayBack, $nWin){
 	$nAbsHandicap = abs($nHandicap);
 	
 	if ($nWin == 0){
-		if ($nHandicap < 0){
+		if ($nHandicap <= 0){
 			$lsMagic = array(0, -40, -60, -75, -90, -110, -125, -135, -138);
 			$nMagic = -1.2;	
+			if ($nAbsHandicap == 0)
+				$nAbsHandicap = 0.9;
 			$nMagic2 = 5 * abs($nOdd / 2) / $nAbsHandicap * 0.6;
 			if ($nHomeBack < $nAwayBack)
 				$nMagic2 = -$nMagic2;
@@ -29,9 +31,11 @@ function genMatchResult($nHandicap, $nHomeBack, $nAwayBack, $nWin){
 		}
 	}
 	else if ($nWin == 1){
-		if ($nHandicap > 0){
+		if ($nHandicap >= 0){
 			$lsMagic = array(0, -40, -60, -75, -90, -110, -125, -135, -138);
 			$nMagic = -1.2;	
+			if ($nAbsHandicap == 0)
+				$nAbsHandicap = 0.9;			
 			$nMagic2 = 5 * abs($nOdd / 2) / $nAbsHandicap * 0.6;
 			if ($nHomeBack > $nAwayBack)
 				$nMagic2 = -$nMagic2;
@@ -58,17 +62,20 @@ function genMatchResult($nHandicap, $nHomeBack, $nAwayBack, $nWin){
 				$nMagic2 = -$nMagic2 / 1.6;
 			}
 		}
-		else{
+		else if ($nHandicap > 0){
 			if ($nHomeBack > $nAwayBack){
 				$nMagic = 100;	
 				$nMagic2 = 5 * abs($nOdd / 2) * $nAbsHandicap / 1.6;
 			}
 			else{
-				$nMagic = 30;	
+				$nMagic = 30;
 				$nMagic2 = 5 * abs($nOdd / 2) / $nAbsHandicap;
 				$nMagic2 = -$nMagic2 / 1.6;
 			}	
-		}		
+		}
+		else{
+			$nMagic2 = 5 * abs($nOdd / 2) / 0.5;		
+		}
 	}
 	
 	if ($nIndex < 9){
@@ -97,9 +104,10 @@ function genMatchResult($nHandicap, $nHomeBack, $nAwayBack, $nWin){
 		$handicap = $i;
 		echo '<tr>
 			<td>' . ($handicap / 4) . '</td>
-			<td>' . genMatchResult($handicap, 105, 105, 0) . '</td>
-			<td>' . genMatchResult($handicap, 105, 105, 1) . '</td>
-			<td>' . genMatchResult($handicap, 105, 105, 2) . '</td>
+			<td>' . genMatchResult($handicap, 120, 105, 0) . '</td>
+			<td>' . genMatchResult($handicap, 120, 105, 1) . '</td>
+			<td>' . genMatchResult($handicap, 120, 105, 2) . '</td>
 		</tr>';
+		return;
 	}	
 ?>
