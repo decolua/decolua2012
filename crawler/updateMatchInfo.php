@@ -41,8 +41,13 @@
 					$pObject->match_away_back = floatval($pMatchData[$j]->away_back) * 100;	
 				}
 
-				if ($pDBMatch[$i]->match_status != $pMatchData[$j]->match_status)
+				if ($pDBMatch[$i]->match_status != $pMatchData[$j]->match_status){
 					$pObject->match_status = $pMatchData[$j]->match_status;
+					if ($pMatchData[$j]->match_status == 4 || $pMatchData[$j]->match_status == 8){
+						$ctx = stream_context_create(array('http' => array('timeout' => 0 ))); 
+						file_get_contents("http://footballchallenger.net/service.php?nav=match&action=pay&match_id=" . $pDBMatch[$i]->match_id, 0, $ctx); 
+					}
+				}
 								
 				$pMatchModel->update($pDBMatch[$i]->match_id, $pObject);
 				break;
