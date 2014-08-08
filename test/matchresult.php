@@ -21,11 +21,11 @@ function genMatchResult($nHandicap, $nHomeBack, $nAwayBack, $nWin){
 				$nMagic2 = -$nMagic2;
 		}
 		else{
-			$lsMagic = array(0, 40, 100, 150, 200, 250, 350, 400, 450);
+			$lsMagic = array(0, 40, 100, 160, 220, 290, 380, 460, 500);
 			$nMagic = 120;	
 			$nMagic2 = 5 * abs($nOdd / 2) * $nAbsHandicap;
 			if ($nHomeBack < $nAwayBack)
-				$nMagic2 = -$nMagic2;		
+				$nMagic2 = -$nMagic2 / 1.8;		
 		}
 	}
 	else if ($nWin == 1){
@@ -37,11 +37,11 @@ function genMatchResult($nHandicap, $nHomeBack, $nAwayBack, $nWin){
 				$nMagic2 = -$nMagic2;
 		}
 		else{
-			$lsMagic = array(0, 40, 100, 150, 200, 250, 350, 400, 450);
+			$lsMagic = array(0, 40, 100, 160, 220, 290, 380, 460, 500);
 			$nMagic = 120;	
 			$nMagic2 = 5 * abs($nOdd / 2) * $nAbsHandicap;
 			if ($nHomeBack > $nAwayBack)
-				$nMagic2 = -$nMagic2;		
+				$nMagic2 = -$nMagic2 / 1.8;		
 		}	
 	}
 	else{
@@ -53,9 +53,9 @@ function genMatchResult($nHandicap, $nHomeBack, $nAwayBack, $nWin){
 				$nMagic2 = 5 * abs($nOdd / 2) * $nAbsHandicap / 1.6;
 			}
 			else{
-				$nMagic = 15;	
+				$nMagic = 30;	
 				$nMagic2 = 5 * abs($nOdd / 2) / $nAbsHandicap;
-				$nMagic2 = -$nMagic2;			
+				$nMagic2 = -$nMagic2 / 1.6;
 			}
 		}
 		else{
@@ -64,9 +64,9 @@ function genMatchResult($nHandicap, $nHomeBack, $nAwayBack, $nWin){
 				$nMagic2 = 5 * abs($nOdd / 2) * $nAbsHandicap / 1.6;
 			}
 			else{
-				$nMagic = 15;	
+				$nMagic = 30;	
 				$nMagic2 = 5 * abs($nOdd / 2) / $nAbsHandicap;
-				$nMagic2 = -$nMagic2;			
+				$nMagic2 = -$nMagic2 / 1.6;
 			}	
 		}		
 	}
@@ -94,12 +94,12 @@ function genMatchResult($nHandicap, $nHomeBack, $nAwayBack, $nWin){
 
 	for ($i = 0; $i<12; $i++)
 	{
-		$handicap = -$i;
+		$handicap = $i;
 		echo '<tr>
 			<td>' . ($handicap / 4) . '</td>
-			<td>' . genMatchResult($handicap, 98, 86, 0) . '</td>
-			<td>' . genMatchResult($handicap, 98, 86, 1) . '</td>
-			<td>' . genMatchResult($handicap, 98, 86, 2) . '</td>
+			<td>' . genMatchResult($handicap, 105, 105, 0) . '</td>
+			<td>' . genMatchResult($handicap, 105, 105, 1) . '</td>
+			<td>' . genMatchResult($handicap, 105, 105, 2) . '</td>
 		</tr>';
 	}	
 ?>

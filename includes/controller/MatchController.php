@@ -45,8 +45,8 @@ class MatchController {
 			return;
 		
 		$pMatch = $this->getMatchModel()->getMatchById($match_id);
-		//if ($pMatch == null || $pMatch[0]->match_status < 4 || $pMatch[0]->match_status == 17)
-		//	return;
+		if ($pMatch == null || $pMatch[0]->match_status < 4 || $pMatch[0]->match_status == 17)
+			return;
 		
 		$lsBetting = $this->getBettingModel()->getBettingByMatchId($match_id, 0);
 		
@@ -55,13 +55,14 @@ class MatchController {
 		for ($i=0; $i<$nCount; $i++){
 			$objBet = new stdClass;
 			$nCash = $this->calCash($lsBetting[$i], $pMatch[0]);
-			if ($nCash > 0){
+			if ($nCash >= $lsBetting[$i]->betting_cash){
 				$this->getUserModel()->updateCash($lsBetting[$i]->user_id, $nCash);	
 				$objBet->betting_status = 1;		
 			}
 			else {
 				$objBet->betting_status = 2;		
 			}
+			$objBet->betting_get = $nCash - $lsBetting[$i]->betting_cash;
 			$nBetId = $this->getBettingModel()->update($lsBetting[$i]->betting_id, $objBet);
 		}	
 	}
@@ -72,17 +73,52 @@ class MatchController {
 		$nBettingCash = $pBetting->betting_cash;
 		$szOddsTitle = $pBetting->odds_title;
 		
-		if ($szOddsTitle[0] == "c"){
-			if ($nHomeGoals != intval($szOddsTitle[2]) || $nAwayGoals != intval($szOddsTitle[3]))
+		if ($szOddsTitle[0] == "m"){
+			if ($szOddsTitle[2] == "h" && $nHomeGoals > $nAwayGoals){
+				$nRet = $nBettingCash * $this->genMatchResult($pMatch->match_handicap, $pMatch->match_home_back, $pMatch->match_away_back, 0); 
+				return $nRet;
+			}
+			if ($szOddsTitle[2] == "a" && $nHomeGoals < $nAwayGoals){
+				$nRet = $nBettingCash * $this->genMatchResult($pMatch->match_handicap, $pMatch->match_home_back, $pMatch->match_away_back, 1); 
+				return $nRet;
+			}
+			if ($szOddsTitle[2] == "d" && $nHomeGoals == $nAwayGoals){
+				$nRet = $nBettingCash * $this->genMatchResult($pMatch->match_handicap, $pMatch->match_home_back, $pMatch->match_away_back, 2); 
+				return $nRet;
+			}
+			return 0;
+		}
+		else if ($szOddsTitle[0] == "h"){
+			if ($szOddsTitle[2] == "h"){
+				$nRange = ($nHomeGoals + ($pMatch->match_handicap / 4)) - $nAwayGoals;
+				if ($nRange == -0.25)
+					return round($nBettingCash / 2);
+				if ($nRange == 0)
+					return $nBettingCash;
+				if ($nRange == 0.25)
+					return $nBettingCash + round($nBettingCash / 2);
+				if ($nRange > 0)
+					return ($nBettingCash + $nBettingCash * $pMatch->match_home_back / 100);
+			}
+			if ($szOddsTitle[2] == "a"){
+				$nRange = $nAwayGoals - ($nHomeGoals + ($pMatch->match_handicap / 4));
+				if ($nRange == -0.25)
+					return round($nBettingCash / 2);
+				if ($nRange == 0)
+					return $nBettingCash;
+				if ($nRange == 0.25)
+					return $nBettingCash + round($nBettingCash / 2);					
+				if ($nRange > 0)
+					return round($nBettingCash + $nBettingCash * $pMatch->match_away_back / 100);
+			}
+			return 0;		
+		}	
+		else if ($szOddsTitle[0] == "c"){
+			if ($nHomeGoals != intval($szOddsTitle[2]) || $nAwayGoals != intval($szOddsTitle[4]))
 				return 0;
 				
 			$nRet = $nBettingCash * $this->genCorrectScore($pMatch->match_handicap, $pMatch->match_home_back, $pMatch->match_away_back, $nHomeGoals, $nAwayGoals);
-			
 			return $nRet;
-		}
-		if ($szOddsTitle[0] == "h"){
-		}
-		if ($szOddsTitle[0] == "r"){
 		}		
 	}
 	
@@ -133,7 +169,82 @@ class MatchController {
 		}				
 
 		return round($nMoneyBack);
-	}		
+	}
+	
+	function genMatchResult($nHandicap, $nHomeBack, $nAwayBack, $nWin){
+		$nIndex = abs($nHandicap);
+		$nBase = 250;
+		$nOdd = $nHomeBack - $nAwayBack;
+		$nAbsHandicap = abs($nHandicap);
+		
+		if ($nWin == 0){
+			if ($nHandicap < 0){
+				$lsMagic = array(0, -40, -60, -75, -90, -110, -125, -135, -138);
+				$nMagic = -1.2;	
+				$nMagic2 = 5 * abs($nOdd / 2) / $nAbsHandicap * 0.6;
+				if ($nHomeBack < $nAwayBack)
+					$nMagic2 = -$nMagic2;
+			}
+			else{
+				$lsMagic = array(0, 40, 100, 160, 220, 290, 380, 460, 500);
+				$nMagic = 120;	
+				$nMagic2 = 5 * abs($nOdd / 2) * $nAbsHandicap;
+				if ($nHomeBack < $nAwayBack)
+					$nMagic2 = -$nMagic2 / 1.8;		
+			}
+		}
+		else if ($nWin == 1){
+			if ($nHandicap > 0){
+				$lsMagic = array(0, -40, -60, -75, -90, -110, -125, -135, -138);
+				$nMagic = -1.2;	
+				$nMagic2 = 5 * abs($nOdd / 2) / $nAbsHandicap * 0.6;
+				if ($nHomeBack > $nAwayBack)
+					$nMagic2 = -$nMagic2;
+			}
+			else{
+				$lsMagic = array(0, 40, 100, 160, 220, 290, 380, 460, 500);
+				$nMagic = 120;	
+				$nMagic2 = 5 * abs($nOdd / 2) * $nAbsHandicap;
+				if ($nHomeBack > $nAwayBack)
+					$nMagic2 = -$nMagic2 / 1.8;		
+			}	
+		}
+		else{
+			$lsMagic = array(0, 30, 50, 70, 100, 140, 190, 250, 320);
+			$nBase = 300;	
+			if ($nHandicap < 0){
+				if ($nHomeBack < $nAwayBack){
+					$nMagic = 100;	
+					$nMagic2 = 5 * abs($nOdd / 2) * $nAbsHandicap / 1.6;
+				}
+				else{
+					$nMagic = 30;	
+					$nMagic2 = 5 * abs($nOdd / 2) / $nAbsHandicap;
+					$nMagic2 = -$nMagic2 / 1.6;
+				}
+			}
+			else{
+				if ($nHomeBack > $nAwayBack){
+					$nMagic = 100;	
+					$nMagic2 = 5 * abs($nOdd / 2) * $nAbsHandicap / 1.6;
+				}
+				else{
+					$nMagic = 30;	
+					$nMagic2 = 5 * abs($nOdd / 2) / $nAbsHandicap;
+					$nMagic2 = -$nMagic2 / 1.6;
+				}	
+			}		
+		}
+		
+		if ($nIndex < 9){
+			$nBack = $nBase + $lsMagic[$nIndex];
+		}
+		else{
+			$nBack = $nBase + $lsMagic[8] + ($nIndex - 8) * $nMagic;
+		}
+
+		return round($nBack + $nMagic2) / 100;	
+	}
 }
 
 ?>

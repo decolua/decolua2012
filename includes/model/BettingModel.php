@@ -84,7 +84,7 @@ class BettingModel
 			}		
 			$szBind = substr($szBind, 0, strlen($szBind) - 1);
 		
-			$szQuery = "UPDATE `betting` SET $szBind WHERE betting_id = :betting_id";
+			$szQuery = "UPDATE `betting` SET $szBind WHERE betting_id = :betting_id LIMIT 1";
 			$st = $this->db->prepare($szQuery);		
 			
 			// Bind Param

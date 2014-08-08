@@ -88,7 +88,7 @@ class UserModel
 			$st = $this->db->prepare(
 				"UPDATE `user` 
 				SET user_cash = user_cash + $nCash
-				WHERE user_id=:user_id");
+				WHERE user_id=:user_id LIMIT 1");
 			$st->bindParam(':user_id', $user_id);
 			$st->execute();
 		}		
@@ -107,7 +107,7 @@ class UserModel
 			}		
 			$szBind = substr($szBind, 0, strlen($szBind) - 1);
 		
-			$szQuery = "UPDATE `user` SET $szBind WHERE user_id = :user_id";
+			$szQuery = "UPDATE `user` SET $szBind WHERE user_id = :user_id LIMIT 1";
 			$st = $this->db->prepare($szQuery);		
 			
 			// Bind Param

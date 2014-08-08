@@ -58,7 +58,7 @@ class MatchModel
 		if($this->db){
 			$szQuery = "UPDATE match SET
 						status = :status
-						WHERE id = :id";
+						WHERE id =:id LIMIT 1";
 			$st = $this->db->prepare($szQuery);		
 			$st->bindParam(':status', $status);
 			$st->bindParam(':id', $id);
