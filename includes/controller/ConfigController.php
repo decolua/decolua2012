@@ -7,7 +7,10 @@ class ConfigController {
 	}	
 	
 	public function start() {
-		$nVersion = intval($_GET['ver']);
+		if (!isset($_GET['ver']))
+			$nVersion = 0;
+		else
+			$nVersion = intval($_GET['ver']);
 		
 		$pData = $this->getConfigModel()->getConfig();
 		$pObject = new stdClass; 

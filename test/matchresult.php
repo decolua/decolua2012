@@ -104,10 +104,9 @@ function genMatchResult($nHandicap, $nHomeBack, $nAwayBack, $nWin){
 		$handicap = $i;
 		echo '<tr>
 			<td>' . ($handicap / 4) . '</td>
-			<td>' . genMatchResult($handicap, 120, 105, 0) . '</td>
-			<td>' . genMatchResult($handicap, 120, 105, 1) . '</td>
-			<td>' . genMatchResult($handicap, 120, 105, 2) . '</td>
+			<td>' . genMatchResult($handicap, 120, 120, 0) . '</td>
+			<td>' . genMatchResult($handicap, 120, 120, 1) . '</td>
+			<td>' . genMatchResult($handicap, 120, 120, 2) . '</td>
 		</tr>';
-		return;
 	}	
 ?>

@@ -31,7 +31,17 @@ class BettingModel
 			$st->execute();
 			return $st->fetchAll(PDO::FETCH_CLASS);
 		}			
-	}		
+	}	
+
+		public function getBettingByUserId($user_id, $betting_time){
+		if($this->db) {
+			$st = $this->db->prepare("SELECT * FROM betting WHERE user_id=:user_id AND betting_time>=:betting_time");
+			$st->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+			$st->bindParam(':betting_time', $betting_time, PDO::PARAM_STR);
+			$st->execute();
+			return $st->fetchAll(PDO::FETCH_CLASS);
+		}			
+	}	
 	
 	public function insert($pObject){
 		if($this->db){

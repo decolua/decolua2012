@@ -73,15 +73,30 @@ class BettingController {
 		for ($i=0; $i<$nCount; $i++){
 			$szListId .= intval($lsBettingId[$i]) . ",";
 		}
-		if ($szListId != "")
-			$szListId .= '0';
+		if ($szListId == "")
+			return;
 			
+		$szListId = rtrim($szListId, ",");
 		$pBetting = $this->getBettingModel()->getBettingByIdList($szListId);			
 		$pObject = new stdClass; 
 		$pObject->bettings = $pBetting;
 		echo json_encode($pObject); 		
-		
 	}
+	
+	public function byUser(){
+		if (!isset($_GET['id']))
+			return;	
+			
+		$user_id = intval($_GET['id']);
+		$nTime = intval($_GET['t']);
+		$szTime = date("Y-m-d h:i:s", $nTime);
+			
+		$pBetting = $this->getBettingModel()->getBettingByUserId($user_id, $szTime);		
+		$pObject = new stdClass; 
+		$pObject->time = time();
+		$pObject->betting_list = $pBetting;	
+		echo json_encode($pObject); 
+	}	
 }
 
 ?>

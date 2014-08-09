@@ -24,12 +24,16 @@ if (isset($_GET['nav']))
 		if (isset($_GET['info'])){
 			if ($_GET['info']=="live")
 				$page->getLiving();
-			if ($_GET['info']=="coming")
-				$page->getUpComing();				
+			else if ($_GET['info']=="coming")
+				$page->getUpComing();
+			else if ($_GET['info']=="byids")
+				$page->getMatchListByIds();
 		}
 		if (isset($_GET['action'])){
 			if ($_GET['action']=="pay")
-				$page->pay();				
+				$page->pay();		
+			else if ($_GET['action']=="return")
+				$page->ret();				
 		}		
 	}
 	else if ($_GET['nav']=="user"){
@@ -52,8 +56,10 @@ if (isset($_GET['nav']))
 		else if (isset($_GET['info'])){
 			if ($_GET['info']=="bet")
 				$page->bet();
-			if ($_GET['info']=="result")
-				$page->getResult();					
+			else if ($_GET['info']=="result")
+				$page->getResult();	
+			else if ($_GET['info']=="user")
+				$page->byUser();					
 		}
 	}
 	else if ($_GET['nav']=="nation"){
@@ -62,9 +68,7 @@ if (isset($_GET['nav']))
 	}
 	else if ($_GET['nav']=="config"){
 		$page = new ConfigController();
-		if (isset($_GET['ver'])){
-			$page->start();					
-		}
+		$page->start();
 	}	
 }
 ?>

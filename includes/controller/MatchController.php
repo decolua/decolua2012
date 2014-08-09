@@ -38,6 +38,39 @@ class MatchController {
 		echo json_encode($pObject);  
 	}
 	
+	public function getMatchListByIds() {
+		if (!isset($_GET['ids']))
+			return;	
+			
+		$lsMatchId = explode('|', $_GET['ids']);
+
+		$nCount = count($lsMatchId);
+		$szListId = "";
+		for ($i=0; $i<$nCount; $i++){
+			$szListId .= intval($lsMatchId[$i]) . ",";
+		}
+		if ($szListId == "")
+			return;
+			
+		$szListId = rtrim($szListId, ",");
+		$pMatch = $this->getMatchModel()->getMatchByIdList($szListId);			
+		$pObject = new stdClass; 
+		$pObject->matches = $pMatch;
+		echo json_encode($pObject);
+		
+		return;
+			
+		$pData = $this->getMatchModel()->getUpComingMatch();
+		$nCount = count($pData);
+		for ($i=0; $i<$nCount; $i++){
+			$pData[$i]->match_first_time .= " +08:00";
+			$pData[$i]->match_second_time .= " +08:00";
+		}
+		$pObject = new stdClass; 
+		$pObject->matches = $pData;
+		echo json_encode($pObject);  
+	}
+	
 	public function pay(){
 		$match_id = intval($_GET["match_id"]);
 		
@@ -66,6 +99,30 @@ class MatchController {
 			$nBetId = $this->getBettingModel()->update($lsBetting[$i]->betting_id, $objBet);
 		}	
 	}
+	
+	public function ret(){
+		$match_id = intval($_GET["match_id"]);
+		
+		if ($match_id < 1)
+			return;
+		
+		$pMatch = $this->getMatchModel()->getMatchById($match_id);
+		if ($pMatch != 13 && $pMatch != 14)
+			return;
+		
+		$lsBetting = $this->getBettingModel()->getBettingByMatchId($match_id, 0);
+		
+		// Payment
+		$nCount = count($lsBetting);
+		for ($i=0; $i<$nCount; $i++){
+			$objBet = new stdClass;
+			$nCash = $lsBetting[$i]->betting_cash;
+			$this->getUserModel()->updateCash($lsBetting[$i]->user_id, $nCash);
+			$objBet->betting_status = 3;
+			$objBet->betting_get = 0;
+			$nBetId = $this->getBettingModel()->update($lsBetting[$i]->betting_id, $objBet);
+		}	
+	}	
 	
 	public function calCash($pBetting, $pMatch){
 		$nHomeGoals = $pMatch->match_home_goals;
