@@ -92,6 +92,11 @@ class BettingController {
 		$szTime = date("Y-m-d h:i:s", $nTime);
 			
 		$pBetting = $this->getBettingModel()->getBettingByUserId($user_id, $szTime);		
+		$nCount = count($pBetting);
+		for ($i=0; $i<$nCount; $i++){
+			$pBetting[$i]->betting_time .= " +07:00";
+		}		
+		
 		$pObject = new stdClass; 
 		$pObject->time = time();
 		$pObject->betting_list = $pBetting;	
