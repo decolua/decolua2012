@@ -70,5 +70,12 @@ if (isset($_GET['nav']))
 		$page = new ConfigController();
 		$page->start();
 	}	
+	else if ($_GET['nav']=="server"){
+		$page = new ServerController();
+		if (isset($_GET['info'])){
+			if ($_GET['info']=="curtime")
+				$page->getCurTime();
+		}
+	}		
 }
 ?>

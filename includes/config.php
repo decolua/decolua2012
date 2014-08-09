@@ -35,6 +35,7 @@ require_once('controller/MatchController.php');
 require_once('controller/UserController.php');
 require_once('controller/BettingController.php');
 require_once('controller/ConfigController.php');
+require_once('controller/ServerController.php');
 
 //Required Models,
 require_once('model/LeagueModel.php');
