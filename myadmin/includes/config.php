@@ -9,20 +9,6 @@ header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");
 header("Vary: Accept-Encoding");
 
-//DB
-if ($_SERVER['HTTP_HOST'] == "localhost"){
-	$db_host = 'localhost';
-	$db_user = 'root';
-	$db_pass = '';
-	$db_name = 'funnybet';	
-}
-else{
-	$db_host = '23.229.216.198';
-	$db_user = 'anhvh';
-	$db_pass = 'challenge';
-	$db_name = 'funnybet';	
-}
-
 // Configs
 require_once('connect.php');
 require_once('helpers.php'); 
