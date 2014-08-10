@@ -8,7 +8,7 @@ header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
 header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");
 //header("Vary: Accept-Encoding");
-date_default_timezone_set('Asia/Bangkok');
+//date_default_timezone_set('Asia/Bangkok');
 
 //DB
 if ($_SERVER['HTTP_HOST'] == "localhost"){

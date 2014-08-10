@@ -39,7 +39,9 @@ class BettingController {
 			
 		// Check Match 
 		$pMatch = $this->getMatchModel()->getMatchById(intval($_POST['match_id']));
-		if ($pMatch == null || $pMatch[0]->match_status != 17)
+		if ($pMatch == null || 
+			$pMatch[0]->match_status != 17 ||
+			$pMatch[0]->match_handicap == null)
 			return;			
 	
 		// Insert Bet
@@ -94,7 +96,7 @@ class BettingController {
 		$pBetting = $this->getBettingModel()->getBettingByUserId($user_id, $szTime);		
 		$nCount = count($pBetting);
 		for ($i=0; $i<$nCount; $i++){
-			$pBetting[$i]->betting_time .= " +07:00";
+			$pBetting[$i]->betting_time .= " -07:00";
 		}		
 		
 		$pObject = new stdClass; 

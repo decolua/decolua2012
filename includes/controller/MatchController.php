@@ -72,7 +72,10 @@ class MatchController {
 			return;
 		
 		$pMatch = $this->getMatchModel()->getMatchById($match_id);
-		if ($pMatch == null || $pMatch[0]->match_status < 4 || $pMatch[0]->match_status == 17)
+		if ($pMatch == null || 
+			$pMatch[0]->match_status < 4 || 
+			$pMatch[0]->match_status == 17 ||
+			$pMatch[0]->match_handicap == null)
 			return;
 		
 		$lsBetting = $this->getBettingModel()->getBettingByMatchId($match_id, 0);

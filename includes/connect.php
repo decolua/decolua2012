@@ -12,7 +12,9 @@ try {
 		$db_pass
 	);
     $db->query("SET NAMES 'utf8'");
-	$db->query("SET time_zone = '+8:00'");
+	//$db->query("SET time_zone = 'Asia/Bangkok'");
+	//$db->query("SET SESSION time_zone = 'Asia/Bangkok'");
+	
 	$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 }
 catch(PDOException $e) {
