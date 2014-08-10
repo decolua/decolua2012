@@ -17,7 +17,7 @@ class BettingModel
 	
 	public function getBettingByIdList($szId){
 		if($this->db) {
-			$st = $this->db->prepare("SELECT betting_id, betting_status FROM betting WHERE betting_id IN ($szId)");
+			$st = $this->db->prepare("SELECT * FROM betting WHERE betting_id IN ($szId)");
 			$st->execute();
 			return $st->fetchAll(PDO::FETCH_CLASS);
 		}			

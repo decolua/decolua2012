@@ -158,6 +158,52 @@ class UserController {
 		$pRetObject->user = $pUser;		
 		echo json_encode($pRetObject);
 	}	
+	
+	public function getpass(){
+		//if (!isset($_POST["user_id"]) || intval($_POST["user_id"]) == 0)
+		//	return;
+		
+		//$pUser = $this->getUserModel()->getUserById(intval($_POST["user_id"]));
+		//if ($pUser == null)
+		//	return;
+
+		
+		$szUser = "support@footballchallenger.net";
+		$szPass = "maiyeuem";
+		$szMailTo = "lequangdao.itm@gmail.com";
+		$szTitle = "Renew Password";	
+		$szContent = "Test tính năng tự động gửi mail.";
+		
+		$this->sendmail($szUser, $szPass, $szMailTo, $szTitle, $szContent);
+	}
+	
+	public function sendmail($szUser, $szPass, $szMailTo, $szTitle, $szContent){
+		$szContent = '<body>' . $szContent . '</body>';
+		error_reporting(E_STRICT);
+		date_default_timezone_set('America/Toronto');
+		$mail             = new PHPMailer();
+		$mail->IsSMTP(); 									// telling the class to 
+		$mail->SMTPDebug  = 2;                     			// enables SMTP debug
+		$mail->SMTPAuth   = true;                  			// enable SMTP
+		//$mail->SMTPSecure = "ssl";                 		// sets the prefix to 
+		$mail->Host       = "footballchallenger.net"; 		// sets GMAIL as the 
+		$mail->Port       = 25;                   			// set the SMTP port for 
+		$mail->Username   = $szUser;  						// GMAIL username
+		$mail->Password   = $szPass;            			// GMAIL password
+		$mail->CharSet	  = "utf-8";
+		$mail->SetFrom($szUser, 'First Last');
+		$mail->AddReplyTo($szUser,"First Last");
+		$mail->Subject    = $szTitle;
+		$mail->AltBody    = $szTitle;
+		$mail->MsgHTML($szContent);
+		$mail->AddAddress($szMailTo, "Lost Password");
+
+		if(!$mail->Send()) {
+			echo "Mailer Error: " . $mail->ErrorInfo;
+		} else {
+			echo "Message sent!";
+		}	
+	}
 }
 
 ?>

@@ -76,6 +76,13 @@ if (isset($_GET['nav']))
 			if ($_GET['info']=="curtime")
 				$page->getCurTime();
 		}
-	}		
+	}
+	else if ($_GET['nav']=="server"){
+		$page = new ServerController();
+		if (isset($_GET['info'])){
+			if ($_GET['info']=="curtime")
+				$page->getCurTimeStr();
+		}
+	}	
 }
 ?>

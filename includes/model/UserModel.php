@@ -6,10 +6,10 @@ class UserModel
         $this->db = $db;
     }
 	
-	public function getUserById($id){
+	public function getUserById($user_id){
 		if($this->db) {
-			$st = $this->db->prepare("SELECT * FROM user WHERE id=:id");
-			$st->bindParam(':id', $id);
+			$st = $this->db->prepare("SELECT * FROM user WHERE user_id=:user_id");
+			$st->bindParam(':user_id', $user_id);
 			$st->execute();
 			return $st->fetchAll(PDO::FETCH_CLASS);
 		}			

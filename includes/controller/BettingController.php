@@ -79,7 +79,11 @@ class BettingController {
 			return;
 			
 		$szListId = rtrim($szListId, ",");
-		$pBetting = $this->getBettingModel()->getBettingByIdList($szListId);			
+		$pBetting = $this->getBettingModel()->getBettingByIdList($szListId);
+		$nCount = count($pBetting);
+		for ($i=0; $i<$nCount; $i++){
+			$pBetting[$i]->betting_time .= " -07:00";
+		}			
 		$pObject = new stdClass; 
 		$pObject->bettings = $pBetting;
 		echo json_encode($pObject); 		

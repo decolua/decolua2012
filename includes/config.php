@@ -26,7 +26,8 @@ else{
 
 // Configs
 require_once('connect.php');
-//require_once('helpers.php');
+require_once('helpers.php');
+require_once('class.phpmailer.php');
 
 //Required Controllers
 require_once('controller/LeagueController.php');
