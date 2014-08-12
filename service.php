@@ -62,6 +62,13 @@ if (isset($_GET['nav']))
 				$page->byUser();					
 		}
 	}
+	else if ($_GET['nav']=="odds"){
+		$page = new OddsController();
+		if (isset($_GET['info'])){
+			if ($_GET['info']=="count")
+				$page->countOdds();					
+		}
+	}	
 	else if ($_GET['nav']=="nation"){
 		$page = new NationController();
 		$page->start();

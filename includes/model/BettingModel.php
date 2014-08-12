@@ -33,7 +33,7 @@ class BettingModel
 		}			
 	}	
 
-		public function getBettingByUserId($user_id, $betting_time){
+	public function getBettingByUserId($user_id, $betting_time){
 		if($this->db) {
 			$st = $this->db->prepare("SELECT * FROM betting WHERE user_id=:user_id AND betting_time>=:betting_time");
 			$st->bindParam(':user_id', $user_id, PDO::PARAM_INT);

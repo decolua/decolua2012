@@ -14,7 +14,12 @@ class BettingController {
 	private function getMatchModel() {
 		$getMatchModel =  new MatchModel();
 		return $getMatchModel;
-	}		
+	}
+	
+	private function getOddsModel() {
+		$getOddsModel =  new OddsModel();
+		return $getOddsModel;
+	}			
 	
 	public function bet() {
 		if (!isset($_POST['user_id']) || intval($_POST['user_id']) == 0)
@@ -55,7 +60,22 @@ class BettingController {
 		// Update Cash
 		$pInfo = new stdClass;
 		$pInfo->user_cash = $pUser[0]->user_cash - $_POST['betting_cash'];
-		$this->getUserModel()->update($_POST['user_id'], $pInfo);		
+		$this->getUserModel()->update($_POST['user_id'], $pInfo);
+
+		// Update OddsMode
+		$pOdds = $this->getOddsModel()->getOddsByOddsTitle($_POST['match_id'], $_POST['odds_title']);
+		if ($pOdds == null){
+			$objOdd = new stdClass;
+			$objOdd->match_id = $_POST['match_id'];
+			$objOdd->odds_title = $_POST['odds_title'];
+			$objOdd->betting_count = 1;
+			$this->getOddsModel()->insert($objOdd);
+		}
+		else{
+			$objOdd = new stdClass;
+			$objOdd->betting_count = $pOdds[0]->betting_count + 1;
+			$this->getOddsModel()->update($pOdds[0]->odds_id, $objOdd);		
+		}
 		
 		// Return
 		$pRetObject = new stdClass; 

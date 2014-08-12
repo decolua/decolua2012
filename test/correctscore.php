@@ -53,9 +53,9 @@
 		return round($nMoneyBack);
 	}	
 
-	$nHandicap = -4;
-	$home_back = 100;
-	$away_back = 100;	
+	$nHandicap = 4;
+	$home_back = 81;
+	$away_back = 101;	
 	//echo genCorrectScore($nHandicap, $home_back, $away_back, 1, 0);
 	//return;
 	
@@ -80,7 +80,7 @@
 		</tr>';
 	for ($i = 0; $i<12; $i++)
 	{
-		$handicap = $i;
+		$handicap = -$i;
 		echo '<tr>
 			<td> HOME </td>
 			<td>' . ($handicap / 4) . '</td>
