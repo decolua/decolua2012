@@ -8,7 +8,7 @@ class OddsModel
 	
 	public function getOddsByMatchId($match_id){
 		if($this->db) {
-			$st = $this->db->prepare("SELECT * FROM odds WHERE match_id=:match_id");
+			$st = $this->db->prepare("SELECT match_id, odds_title, betting_count FROM odds WHERE match_id=:match_id");
 			$st->bindParam(':match_id', $match_id, PDO::PARAM_INT);
 			$st->execute();
 			return $st->fetchAll(PDO::FETCH_CLASS);
