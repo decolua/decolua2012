@@ -102,9 +102,11 @@ class BettingController {
 		$pBetting = $this->getBettingModel()->getBettingByIdList($szListId);
 		$nCount = count($pBetting);
 		for ($i=0; $i<$nCount; $i++){
-			$pBetting[$i]->betting_time .= " -07:00";
+			$pBetting[$i]->betting_time .= " " . SERVERUTC;
 		}			
 		$pObject = new stdClass; 
+		$szTime = date("Y-m-d h:i:s " . SERVERUTC);
+		$pObject->time = $szTime;		
 		$pObject->bettings = $pBetting;
 		echo json_encode($pObject); 		
 	}
@@ -120,7 +122,7 @@ class BettingController {
 		$pBetting = $this->getBettingModel()->getBettingByUserId($user_id, $szTime);		
 		$nCount = count($pBetting);
 		for ($i=0; $i<$nCount; $i++){
-			$pBetting[$i]->betting_time .= " -07:00";
+			$pBetting[$i]->betting_time .= " " . SERVERUTC;
 		}		
 		
 		$pObject = new stdClass; 

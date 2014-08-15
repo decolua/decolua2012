@@ -15,6 +15,21 @@ class MatchModel
 		}			
 	}
 	
+	public function getMatchInTimeRange(){
+		$CachedData = apc_fetch("getMatchInTimeRange");
+		if ($CachedData !== false){
+			return $CachedData;
+		}
+		if($this->db) {
+			$st = $this->db->prepare(
+				'SELECT match_id, league_id, team_home_id, team_away_id, match_home_goals, match_away_goals, match_first_time, match_first_result, match_first_time, match_second_time, match_status FROM `match` WHERE ADDTIME(match_first_time, "24:00:00") > NOW() AND match_status <> 17');
+			$st->execute();
+			$lsData = $st->fetchAll(PDO::FETCH_CLASS);
+			apc_add("getMatchInTimeRange", $lsData, 120);
+			return $lsData;	
+		}	
+	}	
+	
 	public function getLivingMatch(){
 		if($this->db) {
 			$st = $this->db->prepare(

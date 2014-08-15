@@ -10,6 +10,8 @@ header("Pragma: no-cache");
 //header("Vary: Accept-Encoding");
 //date_default_timezone_set('Asia/Bangkok');
 
+define("SERVERUTC", "-12:00");
+
 // Configs
 require_once('connect.php');
 require_once('helpers.php');
