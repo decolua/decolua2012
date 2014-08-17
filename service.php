@@ -28,6 +28,8 @@ if (isset($_GET['nav']))
 				$page->getUpComing();
 			else if ($_GET['info']=="byids")
 				$page->getMatchListByIds();
+			if ($_GET['info']=="test")
+				$page->getTest();				
 		}
 		if (isset($_GET['action'])){
 			if ($_GET['action']=="pay")

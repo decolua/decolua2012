@@ -15,8 +15,6 @@ class MatchController {
 	}		
 	
 	public function getLiving() {
-		
-		//$pData = $this->getMatchModel()->getLivingMatch();
 		$pData = $this->getMatchModel()->getMatchInTimeRange();
 		$nCount = count($pData);
 		for ($i=0; $i<$nCount; $i++){
@@ -24,14 +22,29 @@ class MatchController {
 			$pData[$i]->match_second_time .= " +08:00";
 		}
 		$pObject = new stdClass; 
+		$szTime = date("Y-m-d H:i:s "  . SERVERUTC);
+		$pObject->time = $szTime;			
 		$pObject->matches = $pData;
-		$szTime = date("Y-m-d h:i:s "  . SERVERUTC);
-		$pObject->time = $szTime;		
 		if (!isset($_GET['zip']) || $_GET['zip']=="1")
 			echo gzcompress(json_encode($pObject), 9);
 		else
 			echo json_encode($pObject); 
 	}
+	
+	public function getTest() {
+		$pData = $this->getMatchModel()->getUpComingMatch();
+		$nCount = count($pData);
+		for ($i=0; $i<$nCount; $i++){
+			$pData[$i]->match_status = 1;
+			$pData[$i]->match_first_time .= " +08:00";
+			$pData[$i]->match_second_time .= " +08:00";
+		}
+		$pObject = new stdClass; 
+		$pObject->matches = $pData;
+		$szTime = date("Y-m-d H:i:s "  . SERVERUTC);
+		$pObject->time = $szTime;		
+		echo json_encode($pObject); 
+	}	
 	
 	public function getUpComing() {
 		$pData = $this->getMatchModel()->getUpComingMatch();
@@ -41,7 +54,7 @@ class MatchController {
 			$pData[$i]->match_second_time .= " +08:00";
 		}
 		$pObject = new stdClass; 
-		$szTime = date("Y-m-d h:i:s " . SERVERUTC);
+		$szTime = date("Y-m-d H:i:s " . SERVERUTC);
 		$pObject->time = $szTime;		
 		$pObject->matches = $pData;
 		echo json_encode($pObject);  
@@ -70,7 +83,7 @@ class MatchController {
 		}
 		
 		$pObject = new stdClass; 
-		$szTime = date("Y-m-d h:i:s " . SERVERUTC);
+		$szTime = date("Y-m-d H:i:s " . SERVERUTC);
 		$pObject->time = $szTime;		
 		$pObject->matches = $pMatch;
 		echo json_encode($pObject); 

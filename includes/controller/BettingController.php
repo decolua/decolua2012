@@ -55,7 +55,7 @@ class BettingController {
 		$objBet->match_id = $_POST['match_id'];
 		$objBet->odds_title = $_POST['odds_title'];
 		$objBet->betting_cash = $_POST['betting_cash'];
-		$objBet->betting_time = date("Y-m-d h:i:s");
+		$objBet->betting_time = date("Y-m-d H:i:s");
 		$nBetId = $this->getBettingModel()->insert($objBet);
 		
 		// Update Cash
@@ -106,7 +106,7 @@ class BettingController {
 			$pBetting[$i]->betting_time .= " " . SERVERUTC;
 		}			
 		$pObject = new stdClass; 
-		$szTime = date("Y-m-d h:i:s " . SERVERUTC);
+		$szTime = date("Y-m-d H:i:s " . SERVERUTC);
 		$pObject->time = $szTime;		
 		$pObject->bettings = $pBetting;
 		echo json_encode($pObject); 		
@@ -118,7 +118,7 @@ class BettingController {
 			
 		$user_id = intval($_GET['id']);
 		$nTime = intval($_GET['t']);
-		$szTime = date("Y-m-d h:i:s", $nTime);
+		$szTime = date("Y-m-d H:i:s", $nTime);
 			
 		$pBetting = $this->getBettingModel()->getBettingByUserId($user_id, $szTime);		
 		$nCount = count($pBetting);

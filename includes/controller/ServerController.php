@@ -9,7 +9,7 @@ class ServerController {
 	
 	public function getCurTimeStr() {
 		$pRetObject = new stdClass; 
-		$szTime = date("Y-m-d h:i:s " . SERVERUTC);
+		$szTime = date("Y-m-d H:i:s " . SERVERUTC);
 		$pRetObject->time = $szTime;
 		echo json_encode($pRetObject);
 		return;				
