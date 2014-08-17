@@ -5,9 +5,12 @@
 	$pTeamModel = new TeamModel();
 	$p7mModel = new M7Model();
 	$pMatchModel = new MatchModel();
+	$pLeagueModel = new LeagueModel();
 	
 	// Init Crawler 
 	$pCrawler->_bUseProxy = true;
+	$lsLeagueId = $pLeagueModel->getVisibleLeagueId();
+	$pCrawler->_lsLeagueTable = $lsLeagueId;
 	
 	// Fetch Live Data
 	$pMatchData = $pCrawler->getLiveData();

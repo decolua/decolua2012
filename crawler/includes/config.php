@@ -18,7 +18,7 @@ require_once('helpers.php');
 require_once('model/TeamModel.php');
 require_once('model/7mModel.php');
 require_once('model/MatchModel.php');
-require_once('model/UserModel.php');
+require_once('model/LeagueModel.php');
 
 
 //Require Engine

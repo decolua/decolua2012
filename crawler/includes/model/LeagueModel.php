@@ -13,7 +13,27 @@ class LeagueModel
 			$st->execute();
 			return $st->fetchAll(PDO::FETCH_CLASS);
 		}		
-	}		
+	}
+	
+	public function getVisibleLeagueId(){
+		$CachedData = apc_fetch("getVisibleLeagueId");
+		if ($CachedData !== false){
+			return $CachedData;
+		}
+		if($this->db) {
+			$st = $this->db->prepare("SELECT league_id FROM league WHERE league_visible=1 ORDER BY league_id DESC");
+			$st->execute();
+			$lsData = $st->fetchAll(PDO::FETCH_CLASS);
+			$nCount = count($lsData);
+			
+			$lsLeagueId = array();
+			for ($i=0; $i<$nCount; $i++){
+				array_push($lsLeagueId, $lsData[$i]->league_id);
+			}
+			apc_add("getVisibleLeagueId", $lsLeagueId, 36000);
+			return $lsLeagueId;	
+		}		
+	}
 	
 	public function getLeagueById($id){
 		if($this->db) {

@@ -55,6 +55,7 @@ class BettingController {
 		$objBet->match_id = $_POST['match_id'];
 		$objBet->odds_title = $_POST['odds_title'];
 		$objBet->betting_cash = $_POST['betting_cash'];
+		$objBet->betting_time = date("Y-m-d h:i:s");
 		$nBetId = $this->getBettingModel()->insert($objBet);
 		
 		// Update Cash

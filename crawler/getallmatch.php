@@ -3,11 +3,14 @@
 	include("includes/config.php");		
 	$pCrawler = new Crawler();		
 	$pTeamModel = new TeamModel();
+	$pLeagueModel = new LeagueModel();
 	$p7mModel = new M7Model();
 	$pMatchModel = new MatchModel(); 
 	
 	// Init Crawler 
 	$pCrawler->_bUseProxy = true;
+	$lsLeagueId = $pLeagueModel->getVisibleLeagueId();
+	$pCrawler->_lsLeagueTable = $lsLeagueId;
 	$pMatchData = $pCrawler->getLiveData();  
 	
 	$nCount = count($pMatchData);

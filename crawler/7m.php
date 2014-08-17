@@ -4,13 +4,13 @@ class Crawler{
 	public $_szMatchInfoUrl = "http://data2.7m.cn/fixture_data/en_XXX.js";
 	public $_szLiveBasicInfo = "http://ctc.7m.cn/datafile/fen.js";
 	public $_szLiveDetailInfo = "http://ctc.7m.cn/datafile/csxl.js";
-	public $_lsLeagueTable = array(58, 166);
+	//public $_lsLeagueTable = array(58, 166, 92);
+	public $_lsLeagueTable = array();
 	public $_bLeageTable = true;
 	
 	// Proxy
 	//public $_szProxy = "http://sstruyen.com/skybet/proxy.php?url=";
 	public $_szProxy = "http://rxproxy.com/index.php?rxproxyuri=";
-	
 	public $_bUseProxy = true;
 	
 	public function getInfoArray($szHtml, $szPattern, $bString = false){
