@@ -70,14 +70,21 @@ if (isset($_GET['nav']))
 			if ($_GET['info']=="count")
 				$page->countOdds();					
 		}
-	}	
-	else if ($_GET['nav']=="nation"){
-		$page = new NationController();
-		$page->start();
 	}
 	else if ($_GET['nav']=="config"){
 		$page = new ConfigController();
 		$page->start();
+	}		
+	else if ($_GET['nav']=="nation"){
+		$page = new NationController();
+		$page->start();
+	}
+	else if ($_GET['nav']=="cash"){
+		$page = new CashController();
+		if (isset($_GET['action'])){
+			if ($_GET['action']=="purchase")
+				$page->purchase();					
+		}
 	}	
 	else if ($_GET['nav']=="logout"){
 		$page = new ServerController();

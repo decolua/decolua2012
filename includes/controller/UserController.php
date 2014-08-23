@@ -40,9 +40,6 @@ class UserController {
 		
 		$pRetObject->result = "true";
 		$objUser = new stdClass; 
-		//$objUser->user_id = $pUser[0]->user_id;
-		//$objUser->token = $user_token;
-		//$objUser->cash = $pUser[0]->user_cash;
 		$pUser[0]->user_token = $user_token;
 		unset($pUser[0]->user_pass);
 		unset($pUser[0]->user_reg_time);

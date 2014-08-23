@@ -18,7 +18,7 @@ class MatchModel
 	public function getMatchInTimeRange(){
 		$CachedData = apc_fetch("getMatchInTimeRange");
 		if ($CachedData !== false){
-			return $CachedData;
+			//return $CachedData;
 		}
 		if($this->db) {
 			$st = $this->db->prepare(

@@ -26,6 +26,7 @@ require_once('controller/BettingController.php');
 require_once('controller/ConfigController.php');
 require_once('controller/ServerController.php');
 require_once('controller/OddsController.php');
+require_once('controller/CashController.php');
 
 //Required Models,
 require_once('model/LeagueModel.php');
@@ -35,6 +36,7 @@ require_once('model/UserModel.php');
 require_once('model/BettingModel.php');
 require_once('model/ConfigModel.php');
 require_once('model/OddsModel.php');
+require_once('model/CashModel.php');
 
 //Require Engine
 
