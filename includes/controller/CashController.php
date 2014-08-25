@@ -1,6 +1,6 @@
 <?php
 class CashController {
-	private $_salt = "Thieu Muoi";
+	private $_salt = "salt.bbfootball.20140824";
 
 	public function genToken(){
 		return md5(rand(1, 100000000));
@@ -26,16 +26,12 @@ class CashController {
 		if (!isset($_POST['type']) || intval($_POST['type']) == 0)
 			return;	
 			
-		if (!isset($_POST['t']) || intval($_POST['t']) == 0)
-			return;		
-			
 		if (!isset($_POST['h']) || intval($_POST['h']) == 0)
 			return;	
 
 		$user_id = intval($_POST['user_id']);
 		$token = $_POST['token'];
 		$type = intval($_POST['type']);
-		$t = intval($_POST['t']);
 		$h = intval($_POST['h']);
 			
 		// Check User 
@@ -43,7 +39,7 @@ class CashController {
 		if ($pUser == null)
 			return;			
 			
-		if ($this->checksum($user_id, $token, $type, $t, $h) == false)
+		if ($this->checksum($user_id, $token, $type, $h) == false)
 			return;
 
 		// Update Cash
@@ -62,11 +58,10 @@ class CashController {
 		$pRetObj->result = "true";	
 		$pRetObj->token = $user_token;
 		echo json_encode($pRetObj);			
-		
 	}
 	
-	public function checkSum($user_id, $token, $type, $t, $h) {
-		if  (crc32($user_id . $token . $type . $t) == $h)
+	public function checkSum($user_id, $token, $type, $h) {
+		if  (MD5($user_id . $token . $type . $this->_salt) == $h)
 			return true;
 			
 		return false;

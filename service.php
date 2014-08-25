@@ -44,7 +44,9 @@ if (isset($_GET['nav']))
 			if ($_GET['action']=="login")
 				$page->login();
 			else if ($_GET['action']=="register")
-				$page->register();		
+				$page->register();
+			else if ($_GET['action']=="update")
+				$page->update();						
 			else if ($_GET['action']=="pass")
 				$page->getpass();					
 		}

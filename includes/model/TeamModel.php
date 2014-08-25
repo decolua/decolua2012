@@ -103,6 +103,42 @@ class TeamModel
 		}	
 	}
 	
+	public function update($team_id, $pObject){
+		if($this->db){
+			$szBind = "";		
+		
+			$lsData = get_object_vars($pObject);
+			if (count($lsData) == 0)
+				return;
+			
+			foreach($lsData as $key => $value)	{
+				$szBind .= "$key =:$key," ;
+			}		
+			$szBind = substr($szBind, 0, strlen($szBind) - 1);
+		
+			$szQuery = "UPDATE `team` SET $szBind WHERE team_id = :team_id LIMIT 1";
+			$st = $this->db->prepare($szQuery);		
+			
+			// Bind Param
+			$lsValue = array();
+			$i = 0;
+			foreach($lsData as $key => $value)	{
+				$lsValue[$i] = $value;
+				if (is_string($value))
+					$st->bindParam(":$key" , $lsValue[$i], PDO::PARAM_STR);
+				else
+					$st->bindParam(":$key", $lsValue[$i]);
+				$i++;
+			}
+			$st->bindParam(':team_id', $team_id);
+			
+			$st->execute();	
+		}
+		else{
+			throw new Exception("Category is not define!");
+		}	
+	}	
+	
 	public function deleteTeam($team_id){
 		if($this->db){
 			$szQuery = "DELETE FROM team WHERE team_id=:team_id";
@@ -128,5 +164,6 @@ class TeamModel
 			throw new Exception("Category is not define!");
 		}	
 	}	
+
 }
 ?>

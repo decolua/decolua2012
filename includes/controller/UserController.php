@@ -65,7 +65,8 @@ class UserController {
 			$pRetObject->msg = "Email Address is invalid";
 			echo json_encode($pRetObject);
 			return;
-		}		
+		}	
+		
 		$pUser = $this->getUserModel()->getUserByEmail($_POST["email"]);
 		if ($pUser != null){
 			$pRetObject->result = "false";
@@ -120,7 +121,9 @@ class UserController {
 			echo json_encode($pRetObject);
 			return;		
 		}
-		$pInfo->team_id = $_POST["teamid"];			
+		$pInfo->team_id = $_POST["teamid"];		
+		$pTeam[0]->team_fans_num = $pTeam[0]->team_fans_num + 1;
+		$this->getTeamModel()->update(intval($_POST["teamid"]), $pTeam[0]);
 		
 		// country
 		if (isset($_POST["country"])){
@@ -157,21 +160,32 @@ class UserController {
 	}	
 	
 	public function getpass(){
-		//if (!isset($_POST["user_id"]) || intval($_POST["user_id"]) == 0)
-		//	return;
-		
-		//$pUser = $this->getUserModel()->getUserById(intval($_POST["user_id"]));
-		//if ($pUser == null)
-		//	return;
+		// Email
+		$pattern = '/^(?!(?:(?:\\x22?\\x5C[\\x00-\\x7E]\\x22?)|(?:\\x22?[^\\x5C\\x22]\\x22?)){255,})(?!(?:(?:\\x22?\\x5C[\\x00-\\x7E]\\x22?)|(?:\\x22?[^\\x5C\\x22]\\x22?)){65,}@)(?:(?:[\\x21\\x23-\\x27\\x2A\\x2B\\x2D\\x2F-\\x39\\x3D\\x3F\\x5E-\\x7E]+)|(?:\\x22(?:[\\x01-\\x08\\x0B\\x0C\\x0E-\\x1F\\x21\\x23-\\x5B\\x5D-\\x7F]|(?:\\x5C[\\x00-\\x7F]))*\\x22))(?:\\.(?:(?:[\\x21\\x23-\\x27\\x2A\\x2B\\x2D\\x2F-\\x39\\x3D\\x3F\\x5E-\\x7E]+)|(?:\\x22(?:[\\x01-\\x08\\x0B\\x0C\\x0E-\\x1F\\x21\\x23-\\x5B\\x5D-\\x7F]|(?:\\x5C[\\x00-\\x7F]))*\\x22)))*@(?:(?:(?!.*[^.]{64,})(?:(?:(?:xn--)?[a-z0-9]+(?:-+[a-z0-9]+)*\\.){1,126}){1,}(?:(?:[a-z][a-z0-9]*)|(?:(?:xn--)[a-z0-9]+))(?:-+[a-z0-9]+)*)|(?:\\[(?:(?:IPv6:(?:(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){7})|(?:(?!(?:.*[a-f0-9][:\\]]){7,})(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){0,5})?::(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){0,5})?)))|(?:(?:IPv6:(?:(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){5}:)|(?:(?!(?:.*[a-f0-9]:){5,})(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){0,3})?::(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){0,3}:)?)))?(?:(?:25[0-5])|(?:2[0-4][0-9])|(?:1[0-9]{2})|(?:[1-9]?[0-9]))(?:\\.(?:(?:25[0-5])|(?:2[0-4][0-9])|(?:1[0-9]{2})|(?:[1-9]?[0-9]))){3}))\\]))$/iD';	
+	
+		if (!isset($_POST["email"]) || $_POST["email"] == "")
+			return;
 
+		if (preg_match($pattern, $_POST["email"]) !== 1) {
+			return;
+		}				
+		
+		$pUser = $this->getUserModel()->getUserByEmail($_POST["email"]);
+		if ($pUser == null){
+			return;		
+		}		
 		
 		$szUser = "support@footballchallenger.net";
 		$szPass = "maiyeuem";
-		$szMailTo = "lequangdao.itm@gmail.com";
-		$szTitle = "Renew Password";	
-		$szContent = "Test tính năng tự động gửi mail.";
+		$szMailTo = $_POST["email"];
+		$szTitle = "Your Password";	
+		$szContent = "Your Password : " . $pUser[0]->user_pass;
 		
 		$this->sendmail($szUser, $szPass, $szMailTo, $szTitle, $szContent);
+		
+		$pRetObject = new stdClass; 
+		$pRetObject->result = "true";
+		echo json_encode($pRetObject);		
 	}
 	
 	public function sendmail($szUser, $szPass, $szMailTo, $szTitle, $szContent){
@@ -180,7 +194,7 @@ class UserController {
 		date_default_timezone_set('America/Toronto');
 		$mail             = new PHPMailer();
 		$mail->IsSMTP(); 									// telling the class to 
-		$mail->SMTPDebug  = 2;                     			// enables SMTP debug
+		$mail->SMTPDebug  = 1;                     			// enables SMTP debug
 		$mail->SMTPAuth   = true;                  			// enable SMTP
 		//$mail->SMTPSecure = "ssl";                 		// sets the prefix to 
 		$mail->Host       = "footballchallenger.net"; 		// sets GMAIL as the 
@@ -188,17 +202,17 @@ class UserController {
 		$mail->Username   = $szUser;  						// GMAIL username
 		$mail->Password   = $szPass;            			// GMAIL password
 		$mail->CharSet	  = "utf-8";
-		$mail->SetFrom($szUser, 'First Last');
-		$mail->AddReplyTo($szUser,"First Last");
+		$mail->SetFrom($szUser, 'Football Challenger');
+		$mail->AddReplyTo($szUser,"Football Challenger");
 		$mail->Subject    = $szTitle;
 		$mail->AltBody    = $szTitle;
 		$mail->MsgHTML($szContent);
 		$mail->AddAddress($szMailTo, "Lost Password");
 
 		if(!$mail->Send()) {
-			echo "Mailer Error: " . $mail->ErrorInfo;
+			//echo "Mailer Error: " . $mail->ErrorInfo;
 		} else {
-			echo "Message sent!";
+			//echo "Message sent!";
 		}	
 	}
 }
