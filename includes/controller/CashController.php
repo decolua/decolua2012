@@ -23,21 +23,22 @@ class CashController {
 		if (!isset($_POST['token']) || $_POST['token'] == "")
 			return;			
 
-		if (!isset($_POST['type']) || intval($_POST['type']) == 0)
+		if (!isset($_POST['type']))
 			return;	
 			
-		if (!isset($_POST['h']) || intval($_POST['h']) == 0)
+		if (!isset($_POST['h']))
 			return;	
 
 		$user_id = intval($_POST['user_id']);
 		$token = $_POST['token'];
 		$type = intval($_POST['type']);
-		$h = intval($_POST['h']);
+		$h =  strtolower ($_POST['h']);
 			
+
 		// Check User 
 		$pUser = $this->getUserModel()->getUserByIdAndToken($user_id, $token);
 		if ($pUser == null)
-			return;			
+			return;
 			
 		if ($this->checksum($user_id, $token, $type, $h) == false)
 			return;
@@ -46,15 +47,18 @@ class CashController {
 		$pCash = new stdClass;
 		$pCash->user_id = $user_id;
 		$pCash->cash_type = $type;
-		$pCash->cash_time = date("Y-m-d H:i:s", $t);
+		$pCash->cash_time = date("Y-m-d H:i:s");
 		$this->getCashModel()->insert($pCash);	
 		
 		// Update Token
+		$lsCash = array(500,2000,5000,10000);
 		$user_token = $this->genToken();
 		$pInfo = new stdClass;
 		$pInfo->user_token = $user_token;
+		$pInfo->user_cash += $lsCash[$type];
 		$this->getUserModel()->update($pUser[0]->user_id, $pInfo);			
 		
+		$pRetObj = new stdClass;
 		$pRetObj->result = "true";	
 		$pRetObj->token = $user_token;
 		echo json_encode($pRetObj);			
