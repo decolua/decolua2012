@@ -9,5 +9,5 @@
 
 	$pCrawler = new Crawler();
 	$pCrawler->getSkyBetSoccerInfo("");
-	dcmmm;
+	fuk you;
 ?>
